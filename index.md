@@ -12,5 +12,4 @@ seo:
 {{ site.description }}
 {: .fs-6 .fw-300 }
 
-
-# Computing Resources
+Welcome to the R Resources site for the Wake Forest Department of Statistics!

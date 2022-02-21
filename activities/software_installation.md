@@ -9,7 +9,9 @@ R and RStudio are valuable tools for data analysis, visualization, and reports. 
 1. Install R: go to [this link](https://mirror.las.iastate.edu/CRAN/), and choose the download option for your operating system.
 
     a. Windows: Click **Download R for Windows**, then click the **install R for the first time** button.
+    
     b. macOS: Click **Download R for macOS**. Under *Latest release*, choose the package corresponding to your macOS version.
+    
     c. Linux: Click **Download R for Linux**, then select your distro and follow the installation instructions (you will install via the command line).
     
 2. Install RStudio: go to [this link](https://www.rstudio.com/products/rstudio/download/), and click the **Download** button under RStudio Dekstop. Then, click **Download** on the following screen.
