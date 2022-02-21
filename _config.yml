@@ -28,8 +28,6 @@ search_enabled: true
 heading_anchors: true
 permalink: pretty
 aux_links:
-  Ciaran Evans:
-    - 'https://ciaran-evans.github.io/'
 footer_content:
 
 # Collections for website data
