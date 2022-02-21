@@ -1,0 +1,57 @@
+---
+title: "Introduction to R Markdown"
+output: 
+  rmdformats::robobook:
+    css: "homework.css"
+    highlight: pygments
+link-citations: yes
+---
+
+R Markdown is a super versatile tool, which can be used to build lecture slides, reports, and even web pages. `.Rmd` is the file extension for R Markdown documents.
+
+R Markdown allows you to create data analysis documents which combine text, code, and figures.
+
+Below are instructions to help you get started with R Markdown if you haven't used it before.
+
+# Creating a new R Markdown file
+
+**Step 1:** Click the *new file* button in the top left of R Studio ![](rstudio_newfile_button.png)
+
+**Step 2:** Select *R Markdown* from the drop-down menu that appears ![](rstudio_newfile_rmarkdown.png)
+
+**Step 3:** Enter a desired title for the document in the window that appears (e.g., Lab 1)
+
+![](rstudio_new_rmarkdown_window.png)
+
+**Step 4:** Save the `.Rmd` file somewhere easy to find, and give it a useful file name
+
+![](saving_rmarkdown_document.png)
+
+**Step 5:** Now go back to your Lab 1 R Markdown document, and click the `knit` button ![](rmarkdown_knit_button.png) at the top of the document. This converts it to an HTML file that you can share. You can see that the knitted document contains plots and output.
+
+# Components of an R Markdown document
+
+### The YAML
+At the very top the document, there is a section bordered by `---`. This is called the YAML, and it contains information about how to display our document. 
+
+**Step 6:** In the YAML, change `author` from `Your Name` to your actual name (keep the quotes). For example,
+```
+author: "Ciaran Evans"
+```
+Now knit the document again; your name is now displayed at the top.
+
+### Code chunks
+
+R Markdown is great because we can include code directly in the document. This makes it *reproducible*, because the file contains all the code we used for a data analysis. We include R code in special blocks called *chunks*. These look like
+![](rmarkdown_new_code_chunk.png)
+
+There is also a chunk at the beginning that we call the *setup* chunk. This is where we will do things like import data and load packages.
+
+**Step 7:** Click the `Run` button ![](rmarkdown_chunk_run_button.png) on the right of the setup chunk. The `Run` button runs code so you can experiment with data before knitting the R Markdown document.
+
+### Text
+
+Text you write outside of code chunks is displayed normally in the knitted HTML document. The `##` is used to denote a *header*. For example, `## Exercise 1` is displayed as
+![](exercise_1_img.png)
+after you knit. The number of `#` controls how big the header is (more `#` --> smaller).
+
