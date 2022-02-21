@@ -4,12 +4,14 @@ title: R and RStudio installation instructions
 nav_exclude: true
 ---
 
-In this class, we will use R and RStudio for data analysis, visualization, and reports. R is the statistical software, while RStudio is an environment that makes it easy to manage and use that software. Below are instructions for installing R and RStudio (steps 1--5). Please email me if you have any questions or issues!
+R and RStudio are valuable tools for data analysis, visualization, and reports. This site has a list of activities which will teach you a wide range of different R skills. R is the statistical software, while RStudio is an environment that makes it easy to manage and use that software. RStudio is not required for the activities, but many users find it helpful. Below are instructions for installing R and RStudio (steps 1--5). 
 
 1. Install R: go to [this link](https://mirror.las.iastate.edu/CRAN/), and choose the download option for your operating system.
+
     a. Windows: Click **Download R for Windows**, then click the **install R for the first time** button.
     b. macOS: Click **Download R for macOS**. Under *Latest release*, choose the package corresponding to your macOS version.
     c. Linux: Click **Download R for Linux**, then select your distro and follow the installation instructions (you will install via the command line).
+    
 2. Install RStudio: go to [this link](https://www.rstudio.com/products/rstudio/download/), and click the **Download** button under RStudio Dekstop. Then, click **Download** on the following screen.
 3. Open RStudio (the icon is a white R in a blue circle). You should see something like the following:
 ![](rstudio_image.jpeg)

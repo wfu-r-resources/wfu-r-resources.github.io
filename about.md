@@ -1,10 +1,7 @@
 ---
 layout: page
 title: About
-description: >-
-    WFU R Resources.
+description: WFU R Resources.
 ---
 
-# R and Computing Resources
-
----
+Welcome to the R Resources site for the Wake Forest Department of Statistics!

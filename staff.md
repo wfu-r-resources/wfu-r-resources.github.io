@@ -1,10 +1,10 @@
 ---
 layout: page
-title: Staff
-description: A listing of all the course staff members.
+title: Contributors
+description: A listing of all contributors.
 ---
 
-# Course staff
+# Contributors
 
 {% assign instructors = site.staffers | where: 'role', 'Instructor' %}
 {% for staffer in instructors %}
