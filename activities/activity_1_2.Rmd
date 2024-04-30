@@ -1,0 +1,181 @@
+---
+title: "Activity 2: More visualization and data wrangling"
+output: 
+  rmdformats::robobook:
+    css: "homework.css"
+    highlight: pygments
+link-citations: yes
+---
+
+# Data wrangling and visualization with NY flights
+
+In this section, we'll practice exploratory data analysis in R, using data on flights departing from New York City's three major airports.
+
+Once you have loaded the `nycflights13` package, the data are contained in the `flights` dataset. Remember that you can use `?` to get help about functions and datasets in R, so `?flights` will tell you more about the flights data.
+
+## Questions
+
+:::{.question}
+#### Question 1
+
+Summarize the `flights` data. Describe:
+
+* Who (or which organization) originally collected the data?
+* What does a row in the data represent?
+* How many rows and columns are in the data?
+* What information do the variables record?
+* Are there any missing data?
+:::
+
+Now let's look at the distribution of some of the variables. For quantitative variables, we can visualize the distribution with a histogram. 
+
+:::{.question}
+#### Question 2
+
+Create a histogram for the distribution of departure delay, and describe the distribution.
+:::
+
+For categorical variables, we can visualize the distribution through a bar chart.
+
+:::{.question}
+#### Question 3
+
+Create a bar chart showing the number of flights departing from each of the three New York airports (EWR, LGA, and JFK). Which airport had the most flights? *Hint: the code for making a bar chart with `ggplot` is very similar to the code for making a histogram in Question 2. Just change the variable being plotted, and replace `geom_histogram` with something else.*
+:::
+
+Now let's look at the relationship between airport and departure delay.
+
+:::{.question}
+#### Question 4
+
+Create a plot showing the distribution of departure delay for each airport. For each airport, also report the mean departure delay and the standard deviation of departure delays. How does the distribution of departure delay differ across the three New York airports (EWR, LGA, and JFK)?
+:::
+
+Finally, let's visualize the relationship between departure delay from New York, and arrival delay at the flight's destination. 
+
+:::{.question}
+#### Question 5
+
+Below is a scatterplot showing arrival delay vs. departure delay. I have:
+
+* made the color and shape of each point depend on the New York airport it departed from
+* changed the axis labels
+* added a title
+* changed the legend label (to "Origin airport")
+* changed the plot theme (e.g., notice the background is white, not gray)
+* changed the opacity of the points
+* changed the colors used to represent each airport
+
+Recreate this plot as closely as possible. (Note that because the data is large, the `ggplot` function may take longer than usual to run.) You will need to look up how to make some of these changes. *Hint: google searches for things like "ggplot change opacity" often produce good results. We will also cover some of this material next week.*
+:::
+
+```{r, include=F}
+library(tidyverse)
+library(nycflights13)
+```
+
+
+```{r, fig.width = 6, fig.height = 4}
+flights %>%
+  drop_na(dep_delay, arr_delay, origin) %>%
+  ggplot(aes(x = dep_delay, y = arr_delay, 
+             color = origin, shape=origin)) +
+  geom_point(alpha = 0.7) +
+  labs(x = "Departure delay (minutes)", 
+       y = "Arrival delay (minutes)",
+       color = "Origin airport",
+       shape = "Origin airport",
+       title = "Arrival delay vs. departure delay in NYC airports") +
+  theme_bw() +
+  scale_color_manual(values = c("#999999", "#E69F00", "#56B4E9"))
+```
+
+
+One way to summarize the relationship between two quantitative variables is with the *correlation*, which measures the strength of the linear relationship between the two variables. Correlation is a number between -1 and 1; a correlation close to -1 indicates a strong negative relationship, while a correlation close to 1 indicates a strong positive relationship, and a correlation of 0 indicates no relationship.
+
+:::{.question}
+#### Question 6
+In R, we calculate correlation with the *cor* function. Fill in the code below to calculate the correlation between departure delay and arrival delay:
+
+```r
+flights %>%
+  summarize(delay_cor = cor(..., ..., use = "complete.obs"))
+```
+:::
+
+
+:::{.question}
+#### Question 7
+Does the correlation between departure delay and arrival delay depend on which airport the flight departs from? We can use the `group_by` function to group the data before calculating correlation. Fill in the code below to calculate the correlation for each airport (EWR, JFK, and LGA).
+
+```r
+flights %>%
+  group_by(...) %>%
+  summarize(delay_cor = cor(..., ..., use = "complete.obs"))
+```
+:::
+
+:::{.question}
+#### Question 8
+Flights departing late will probably arrive late. But sometimes pilots can make up for lost time during the flight. Let's create a new variable measuring the amount of time made up during each flight, and visualize its distribution with a histogram. Fill in the following code:
+
+```r
+flights %>%
+  mutate(time_gained = ...) %>%
+  ggplot(aes(x = ...)) +
+  geom_histogram() +
+  labs(x = "...",
+       title = "...") +
+  theme_bw()
+```
+:::
+
+
+:::{.question}
+#### Question 9
+How does the amount of time gained vary across airlines? Fill in the following code to calculate the average time gained and the standard deviation of time gained for each airline.
+
+```r
+flights %>%
+  mutate(time_gained = ...) %>%
+  group_by(...) %>%
+  summarize(avg_time_gained = ...,
+            sd_time_gained = ...)
+```
+:::
+
+:::{.question}
+#### Question 10
+Suppose we want to know how many flights departed from each of the three NY airports (EWR, LGA, and JFK) in 2013. The `count` function allows us to count the number of rows, and to specify a variable to count by. Adding `sort = TRUE` will order the results from largest to smalles. For example:
+
+```r
+flights |>
+  count(origin, sort = TRUE)
+```
+
+Reproduce the output from the `count` function, but use the `group_by`, `summarize`, and `arrange` functions instead.
+:::
+
+
+:::{.question}
+#### Question 11
+Now let's look more at the different airlines. Which airport is the most common departure airport for American Airlines (AA) flights? Fill in the following code.
+
+```r
+flights %>%
+  filter(... == "AA") %>%
+  count(...)
+```
+:::
+
+:::{.question}
+#### Question 12
+Occasionally, flights actually depart early. How many American Airlines flights departed early?
+
+```r
+flights %>%
+  filter(carrier ..., dep_delay ...) %>%
+  count()
+```
+:::
+

@@ -1,0 +1,285 @@
+---
+title: "Activity 2: Writing functions"
+output: 
+  rmdformats::robobook:
+    css: "homework.css"
+    highlight: pygments
+link-citations: yes
+---
+
+## Writing a function to calculate the mean
+
+The *mean* of numbers $x_1,...,x_n$ is their average: 
+
+$$\frac{x_1 + x_2 + \cdots + x_n}{n}$$
+In R, we can calculate the mean with the `mean` function. For example:
+
+```{r}
+mean(c(1,2,3))
+```
+
+:::{.question}
+#### Question 1
+
+Write your own mean function, called `my_mean`, that calculates the mean of a vector. The input to your function should be a vector, and the output should be the mean of the values in that vector. You may *not* use the built-in `mean` function in R, but you *may* use the `sum` and `length` functions.
+:::
+
+:::{.question}
+#### Question 2
+
+Check that your function works by comparing the output with R's `mean` function for several different input vectors.
+:::
+
+## Weighted means
+
+A *weighted* mean is similar to the usual average, but now we add a *weight* to each value. The observations with greater weights contribute more to the weighted mean.
+
+The weighted mean of $x_1,...,x_n$ with weights $w_1,...,w_n$ is 
+
+$$\frac{w_1 x_1 + w_2 x_2 + \cdots + w_n x_n}{w_1 + w_2 + \cdots + w_n}$$
+The usual arithmetic mean is a special case of the weighted mean with $w_1 = w_2 = \cdots = w_n = 1$.
+
+:::{.question}
+#### Question 3
+Modify your `my_mean` function from Exercise 1 so that it now takes **two** inputs -- a vector of values `x`, and a vector of weights `w` -- and returns the *weighted* mean of `x` with weights `w`. *Hint*: If `x` and `w` are two vectors of the same length, then `x*w` is a vector created by multiplying each entry of `x` with the corresponding entry of `w`.
+:::
+
+:::{.question}
+#### Question 4
+When we calculate a mean, we usually don't need weights. Modify your `my_mean` function from Exercise 3 so that the *default* weights are all 1.
+:::
+
+:::{.question}
+#### Question 5
+
+Check that your function from Exercise 4 works by running the following:
+
+```{r, eval=F}
+# should be 2
+my_mean(x = c(1, 2, 3))
+
+# should be 2
+my_mean(x = c(1, 2, 3), w = c(1, 1, 1))
+
+# should be 1.5
+my_mean(x = c(1, 2, 3), w = c(1, 1, 0))
+```
+:::
+
+
+## ReLU
+
+Neural networks are a way to learn complex prediction models. Fundamentally, a neural network works by passing input data through a series of nodes; the output of one layer of nodes is the input for the next layer. Each time the data goes through a node, an *activation function* is applied to transform the output (this allows the network to model nonlinear relationships).
+
+Common activation functions include the ReLU (rectified linear unit):
+
+$$f(x) = \begin{cases} x & x > 0 \\ 0 & x \leq 0 \end{cases}$$
+and the *leaky* ReLU, with parameter $a$:
+
+$$f_a(x) = \begin{cases} x & x > 0 \\ a \cdot x & x \leq 0 \end{cases}$$
+Indeed, the ReLU could be considered a special case of the leaky ReLU with $a = 0$. 
+
+Here is an implementation of the ReLU function in R:
+
+```{r}
+relu <- function(x){
+  if(x > 0){
+    return(x)
+  } else {
+    return(0)
+  }
+}
+```
+
+This `relu` function works for single inputs:
+
+```{r}
+relu(1)
+relu(-1)
+```
+
+However, it does not work for vectors of length greater than 1:
+
+```{r, error=T}
+relu(c(1, -1))
+```
+
+The issue here is that `if(x > 0)` in the `if...else...` statement is not vectorized. That is, R is expecting a single true or false, not a vector. To vectorize this function we can use the `ifelse` function (which IS vectorized).
+
+:::{.question}
+#### Question 6
+
+Re-write the `relu` function above, using the `ifelse` function, so that `relu` can be applied to vectors.
+:::
+
+:::{.question}
+#### Question 7
+
+Adapt your `relu` function to create a new function, `leaky_relu`, which takes TWO inputs, $x$ and $a$, and returns $f_a(x)$ as defined above. Make $a = 0$ the default value.
+:::
+
+
+## Huber loss function
+
+The Huber loss function is defined as 
+
+$$\psi(x) = \begin{cases} x^2 & \text{if } |x| \leq 1 \\ 2|x| - 1 & \text{if } |x| > 1  \end{cases}$$
+
+This function is quadratic on the interval $[-1,1]$, and linear outside of this interval. It transitions from quadratic to linear "smoothly", and it is often used in place of the usual squared error loss for robust estimation. 
+
+
+:::{.question}
+#### Question 8
+
+Write a function `huber()` that takes as an input a number $x$, and returns the Huber value $\psi(x)$. Here is a code skeleton to get you started:
+
+```r
+huber <- function(x){
+
+}
+```
+
+*Hint:* The `ifelse` function will be helpful!
+:::
+
+
+:::{.question}
+#### Question 9
+
+The `ifelse` function is vectorized, so if you used the `ifelse` function above, your `huber` function should also be vectorized.
+
+Check that the function is vectorized: e.g., `huber(c(0.5, 1, 2))` should return `0.25 1.00 3.00`
+:::
+
+The Huber function can be modified so that the transition from quadratic to linear happens at an arbitrary cutoff value $a$, as in:
+
+$$\psi_a(x) = \begin{cases} x^2 & \text{if } |x| \leq a \\ 2a|x| - a^2 & \text{if } |x| > a  \end{cases}$$
+
+:::{.question}
+#### Question 10
+
+Update your `huber()` function so that it takes two arguments: $x$, a number at which to evaluate the loss, and $a$ a number representing the cutoff value. It should now return $\psi_a(x)$, as defined above. Make $a = 1$ the *default* in your `huber` function.
+:::
+
+
+## Fitting linear regression models
+
+The following code generates data $X_i \sim N(0, 1)$, $\varepsilon_i \sim N(0, 1)$, and 
+
+$$Y_i = \beta_0 + \beta_1 X_i + \varepsilon_i$$
+
+with $\beta_0 = \beta_1 = 1$.
+
+```{r}
+n <- 100
+x <- rnorm(n)
+noise <- rnorm(n)
+y <- 1 + x + noise
+```
+
+To estimate $\beta_0$ and $\beta_1$, we can use the `lm` function:
+
+```{r}
+lm(y ~ x)
+```
+
+How are these estimated coefficients calculated? Mathematically, the vector of estimated coefficients $\widehat{\beta}$ is given by
+
+$$\widehat{\beta} = (X^T X)^{-1} X^T Y$$
+where $X$ is the *design matrix* and $Y$ is the vector of observed responses. For the model above,
+
+$$\widehat{\beta} = \begin{bmatrix}
+\widehat{\beta}_0 \\
+\widehat{\beta}_1
+\end{bmatrix} \hspace{0.5cm} X = \begin{bmatrix}
+1 & x_1 \\
+1 & x_2 \\
+1 & x_3 \\
+\vdots & \vdots \\
+1 & x_n
+\end{bmatrix} \hspace{0.5cm} Y = \begin{bmatrix}
+y_1 \\
+y_2 \\
+y_3 \\
+\vdots \\
+y_n
+\end{bmatrix}$$
+
+How would we do this math in R? Since $X$ is a matrix, and $\widehat{\beta}$ and $Y$ are both vectors, we want to work with *matrices* and *vectors* in R!
+
+* The vector `y` generated above already represents $Y$ (by default, vectors in R are column vectors)
+* We need to create the design matrix $X$, by adding a column of 1s to the `x` simulated above. The following code creates $X$:
+
+```{r, eval=F}
+X_mat <- cbind(1, x)
+```
+
+* Matrix multiplication in R is done with `%*%`. For example, if `A` and `B` are conformal matrices/vectors, then $AB$ would be calculated with `A %*% B`
+* Transposes are calculated with `t()`. E.g., $A^T$ is given by `t(A)`
+* Matrix inverses are calculated with `solve()`. E.g., $A^{-1}$ is given by `solve(A)`
+
+
+:::{.question}
+#### Question 11
+
+Using this information, write a function called `my_lm` which will calculate the estimated coefficients $\widehat{\beta}$ given a vector of responses `y` and a design matrix `X_mat`.
+:::
+
+
+## Standard deviation
+
+The *sample standard deviation* of numbers $x_1,...,x_n$ is given by 
+
+$$\widehat{\sigma} = \sqrt{\frac{1}{n-1}\sum \limits_{i=1}^n (x_i - \bar{x})^2},$$
+
+where $\bar{x} = \frac{1}{n} \sum \limits_{i=1}^n x_i$.
+
+:::{.question}
+#### Question 12
+
+Write a function called `my_sd` which calculates the standard deviation of a vector in R.
+:::
+
+## p-norm
+
+The $\ell_p$ norm of a vector $x = (x_1,...,x_k)$ is given by
+
+$$||x||_p = \left( \sum \limits_{i=1}^k |x_i|^p \right)^{1/p}$$
+:::{.question}
+#### Question 13
+
+Write a function called `p_norm` in R, which takes two inputs: a vector `x`, and `p`, and returns $\ell_p(x)$. Make `p = 2` the default value (this corresponds to the usual Euclidean norm).
+:::
+
+
+## Kurtosis
+
+Suppose we have a sample $X_1,...,X_n$ from some population distribution. We know that the mean describes the "center" of the distribution, the standard deviation is a measure of variability, and skewness describes the shape of the distribution. 
+
+Another quantity we can calculate to describe a distribution is *kurtosis*, which describes how heavy the tails of the distribution are. The *sample kurtosis* is calculated by:
+
+$$\dfrac{\frac{1}{n} \sum \limits_{i=1}^n (X_i - \bar{X})^4}{\left( \frac{1}{n} \sum \limits_{i=1}^n (X_i - \bar{X})^2 \right)^2} \ \ - \ \ 3$$
+
+where $\bar{X}$ is the sample mean.
+
+:::{.question}
+#### Question 14
+
+Write a function in R to calculate the sample kurtosis. Your function should take in one argument: a vector `x`.
+:::
+
+## Correlation
+
+Suppose we have a sample $(X_1, Y_1),...,(X_n, Y_n)$ of $n$ observations collected on two variables, $X$ and $Y$. The strength of the linear relationship between $X$ and $Y$ is measured by their *correlation*, and the sample correlation is calculated with the following formula:
+
+
+$$\dfrac{ \sum \limits_{i=1}^n (X_i - \bar{X})(Y_i - \bar{Y})}{\left( \sum \limits_{i=1}^n (X_i - \bar{X})^2 \right)^{1/2} \left( \sum \limits_{i=1}^n (Y_i - \bar{Y})^2 \right)^{1/2}}$$
+
+:::{.question}
+#### Question 15
+
+Write a function in R to calculate the sample correlation. Your function should take in two arguments: a vector `x` and a vector `y`.
+:::
+
+
+

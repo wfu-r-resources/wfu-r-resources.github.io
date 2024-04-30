@@ -1,0 +1,175 @@
+---
+title: "Activity 4: Data wrangling"
+output: 
+  rmdformats::robobook:
+    css: "homework.css"
+    highlight: pygments
+link-citations: yes
+---
+
+## Baseball data
+
+The `Teams` data in the `Lahman` package contains information on professional baseball teams since 1871. 
+
+:::{.question}
+#### Question 1
+
+Using the `Teams` data, create a plot of the number of home runs scored (`HR`) and allowed (`HRA`) by the Chicago Cubs (`teamID` CHN) in each season. Your plot should look like close to this:
+
+```{r, echo=F, message=F, warning=F}
+library(Lahman)
+library(tidyverse)
+
+Teams |>
+  filter(teamID == "CHN") |>
+  select(yearID, HR, HRA) |>
+  pivot_longer(-yearID,
+               names_to = "team",
+               values_to = "runs") |>
+  mutate(team = ifelse(team == "HR", "Cubs", "Opponent")) |>
+  ggplot(aes(x = yearID, y = runs, color = team)) +
+  geom_point() +
+  geom_line() +
+  labs(x = "Year", y = "Runs", color = "Team") +
+  theme_bw()
+```
+
+You may use whichever R functions you like to create the plot, but the axes and legend should be labeled as in the plot above.
+
+:::
+
+
+## Practice pivoting
+
+:::{.question}
+#### Question 2
+
+The code below creates a data frame called `df1`:
+
+```{r}
+df1 <- data.frame(
+  grp = c("A", "A", "B", "B"),
+  sex = c("F", "M", "F", "M"),
+  meanL = c(0.225, 0.47, 0.325, 0.547),
+  sdL = c(0.106, 0.325, 0.106, 0.308),
+  meanR = c(0.34, 0.57, 0.4, 0.647),
+  sdR = c(0.0849, 0.325, 0.0707, 0.274)
+)
+
+df1
+```
+
+Using `pivot_longer` and `pivot_wider`, reshape `df1` to produce the following output:
+
+```{r, echo=F}
+df1 |>
+  pivot_longer(-c(grp, sex),
+               names_to = "stat", values_to = "value") |>
+  pivot_wider(id_cols = grp,
+              names_from = c(sex, stat),
+              names_sep = ".",
+              values_from = value)
+```
+
+Remember that the `?` provides documentation in R. For example, running `?pivot_wider` in the console gives helpful information about the `pivot_wider` function.
+:::
+
+## Practice pivoting
+
+The code below creates a data frame called `df2`:
+
+```{r}
+df2 <- data.frame(id = rep(c(1, 2, 3), 2),
+                  group = rep(c("T", "C"), each=3),
+                  vals = c(4, 6, 8, 5, 6, 10))
+
+df2
+```
+
+An analyst wants to calculate the pairwise differences between the Treatment (T) and Control (C) values for each individual in this dataset. They use the following code:
+
+```{r}
+Treat <- filter(df2, group == "T")
+Control <- filter(df2, group == "C")
+all <- mutate(Treat, diff = Treat$vals - Control$vals)
+all
+```
+
+
+:::{.question}
+#### Question 3
+
+Verify that this code works for this example and generates the correct values of -1, 0, and -2. Describe two problems that might arise if the data set is not sorted in a particular order or if one of the observations is missing for one of the subjects.
+:::
+
+:::{.question}
+#### Question 4
+
+Provide an alternative approach to generate the `diff` variable, using `group_by` and `summarize` to produce the following output:
+
+```{r, echo=F}
+df2 |>
+  group_by(id) |>
+  summarize(diff = vals[group == "T"] - vals[group == "C"])
+```
+
+:::
+
+:::{.question}
+#### Question 5
+
+Provide an alternative approach to generate the `diff` variable that uses `pivot_wider` and `mutate` to produce the following output:
+
+```{r, echo=F}
+df2 |>
+  pivot_wider(id_cols = id,
+              names_from = group,
+              values_from = vals) |>
+  mutate(diff = T - C)
+```
+
+:::
+
+
+## Analyzing simulation results
+
+Your friend ran simulations to compare three different methods for calculating 95% confidence intervals for $\beta_1$ in a linear regression model. Their data is store in the file `sim_results.csv`, which can be imported into R as follows:
+
+```{r}
+sim_results <- read.csv("https://sta279-f23.github.io/homework/sim_results.csv")
+```
+
+
+The `sim_results` dataset is organized as follows:
+
+* The first column, `n`, records the sample size
+* For each method and sample size, your friend simulated 100 datasets and calculated a confidence interval. The results for method 1 are stored in columns `method1_1`, `method1_2`, ..., `method1_100` (with similar columns for methods 2 and 3). A 1 in a column indicates that the confidence interval captured $\beta_1$, while a 2 indicates the confidence interval did not capture $\beta_1$.
+
+:::{.question}
+#### Question 6
+
+Plot the observed coverage for each method (the fraction of times the confidence interval contained $\beta_1$) as a function of sample size. Your final plot should look as close as possible to this:
+
+```{r, echo=F}
+sim_results |>
+  mutate(across(-n, function(x) {2 - x})) |>
+  rowwise() |>
+  mutate(method1 = mean(c_across(contains("method1"))),
+         method2 = mean(c_across(contains("method2"))),
+         method3 = mean(c_across(contains("method3")))) |>
+  select(n, method1, method2, method3) |>
+  pivot_longer(-n, 
+               names_to = "method",
+               values_to = "coverage") |>
+  ggplot(aes(x = n, y = coverage, color = method)) +
+  geom_point() +
+  geom_line() +
+  labs(x = "Sample size (n)",
+       y = "Coverage",
+       color = "Method") +
+  theme_classic()
+```
+
+You will likely need to use some combination of the following functions: `pivot_longer`, `mutate`, `select`, `across`, `c_across`, `rowwise`
+
+:::

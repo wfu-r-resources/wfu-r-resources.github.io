@@ -1,0 +1,225 @@
+---
+title: "Activity 5: More data wrangling practice questions"
+output: 
+  rmdformats::robobook:
+    css: "homework.css"
+    highlight: pygments
+link-citations: yes
+---
+
+```{r, include=F, message=F, warning=F}
+library(tidyverse)
+```
+
+
+## Reading data wrangling code
+
+Here are two small datasets, `df1` and `df2`:
+
+```{r, include=F}
+set.seed(3)
+
+df1 <- data.frame(id = 1:5, 
+                  x = sample(1:10, 5, replace=T),
+                  y = sample(1:10, 5, replace=T),
+                  z = sample(1:10, 5, replace=T))
+
+df2 <- data.frame(id = 3:6,
+                  a = sample(1:10, 4, replace=T),
+                  b = sample(1:10, 4, replace=T))
+```
+
+```{r}
+df1
+
+df2
+```
+
+
+For each of the following chunks of code, write down the output or explain why it will cause an error.
+
+
+1.
+
+```{r, eval=F}
+df1 |>
+  left_join(df2, join_by(id))
+```
+
+2.
+
+```{r, eval=F}
+df1 |>
+  inner_join(df2, join_by(id))
+```
+
+3.
+
+```{r, eval=F}
+df1 |>
+  group_by(z) |>
+  summarize(max_b = max(b))
+```
+
+
+4.
+
+```{r, eval=F}
+df1 |>
+  select(x, y) |>
+  pivot_longer(cols = -id,
+               names_to = "measurement",
+               values_to = "value")
+```
+
+5.
+
+```{r, eval=F}
+df1 |>
+  select(id, x, y) |>
+  pivot_longer(cols = -id,
+               names_to = "measurement",
+               values_to = "value") |>
+  filter(id %in% c(1, 2, 3))
+```
+
+6.
+
+```{r, eval=F}
+df1 |>
+  left_join(df2, join_by(id)) |>
+  mutate(new_var = x + a) |>
+  group_by(z) |>
+  summarize(mean_new_var = mean(new_var))
+```
+
+
+7.
+
+```{r, eval=F}
+df1 |>
+  left_join(df2, join_by(id)) |>
+  mutate(new_var = x + a) |>
+  group_by(z) |>
+  summarize(mean_new_var = mean(new_var, na.rm=T)) |>
+  summarize(mean_b = mean(b))
+```
+
+## Writing data wrangling code
+
+In each of the questions below, write code to produce the output from the original data.
+
+8. Original data:
+
+```{r, echo=F}
+ex_df <- data.frame(
+  id = c(1, 2, 3),
+  x_1 = c(3, 1, 4),
+  x_2 = c(5, 8, 9),
+  y_1 = c(0, 1, 2),
+  y_2 = c(2, 7, 9)
+)
+
+ex_df
+```
+
+Output:
+
+```{r, echo=F}
+ex_df |>
+  pivot_longer(cols = -id, names_to = c("group", "obs"), names_sep = "_")
+```
+
+9. Original data:
+
+```{r, echo=F}
+ex_df <- data.frame(
+  id = c(1, 1, 2, 2, 3, 3),
+  group = c("x", "y", "x", "y", "x", "y"),
+  value = sample(1:6, replace=T)
+)
+
+ex_df
+```
+
+Output:
+
+```{r, echo=F}
+ex_df |>
+  pivot_wider(id_cols = id, names_from = group, values_from = value)
+```
+
+
+10. Original data:
+
+```{r, echo=F}
+df1 <- data.frame(
+  id = c(1, 2, 3),
+  x = c(7, 9, 13)
+)
+
+df2 <- data.frame(
+  id = c(1, 2, 4),
+  y = c(10, 12, 14)
+)
+```
+
+```{r}
+df1
+
+df2
+```
+
+
+Output:
+
+```{r, echo=F}
+df1 |>
+  left_join(df2, join_by(id))
+```
+
+
+11. Original data:
+
+```{r}
+df1
+
+df2
+```
+
+
+Output:
+
+```{r, echo=F}
+df1 |>
+  inner_join(df2, join_by(id))
+```
+
+12. Original data:
+
+```{r, echo=F}
+df1 = data.frame(
+  a_x = 1,
+  a_y = 2,
+  b_x = 2,
+  b_y = 3
+)
+
+df2 = data.frame(
+  id = c("a", "b"),
+  z = c(4, 5)
+)
+```
+
+```{r}
+df1
+
+df2
+```
+
+
+```{r, echo=F}
+df1 |> 
+  pivot_longer(cols = -c(), names_to = c("id", ".value"), names_sep = "_") |>
+  left_join(df2, join_by(id))
+```

@@ -1,0 +1,364 @@
+---
+title: "Activity 1: Introduction to R and data frames"
+output: 
+  rmdformats::robobook:
+    css: "homework.css"
+    highlight: pygments
+link-citations: yes
+---
+
+**Learning goals:** By the end of this lab, you will be able to
+
+* Open, edit, and knit an R Markdown document
+* Manipulate data frames in R
+* Summarize and plot data
+
+
+# Download the lab R Markdown template
+
+:::{.question}
+R Markdown is a super versatile tool! Most of my lectures and assignments (including this page!) are actually built with R Markdown. `.Rmd` is the file extension for R Markdown documents. An alternative to R Markdown is Quarto, which has the `.qmd` file extension. 
+:::
+
+
+R Markdown allows you to create data analysis documents which combine text, code, and figures. R Markdown will be our primary tool for writing up labs, homework assignments, and projects. For this lab, I have provided a template R Markdown document (`lab_01_template.Rmd`) for you to fill in:
+
+**Step 1:** Download the Lab 1 template file: [activity_1_1_template.Rmd](https://wfu-r-resources.github.io/activities/activity_1_1_template.Rmd). Save it somewhere on your computer that you can find it easily (e.g., a folder on your desktop).
+
+**Step 2:** Open `lab_01_your_name.Rmd` in RStudio.
+
+**Step 3:** Click the `knit` button ![](rmarkdown_knit_button.png) at the top of the document. The knitted document is an HTML file that you can share (when you are finished with the lab, you will submit an HTML file on Canvas). You will re-knit your R Markdown file as you complete the lab.
+
+# Components of an R Markdown document
+
+## The YAML
+At the very top the document, there is a section bordered by `---`. This is called the YAML, and it contains information about how to display our document. 
+
+**Step 5:** In the YAML, change `author` from `Your Name` to your actual name (keep the quotes). For example, I would do
+```
+author: "Ciaran Evans"
+```
+Now knit the document again; your name is now displayed at the top.
+
+## Code chunks
+
+R Markdown is great because we can include code directly in the document. This makes it *reproducible*, because the file contains all the code we used for a data analysis. We include R code in special blocks called *chunks*. These look like
+![](rmarkdown_new_code_chunk.png)
+
+In this lab, you will use one chunk for each question. You can see that I have included them for you in the template. You will fill them in as you go through the lab.
+
+There is also a chunk at the beginning that looks like this:
+![](rmarkdown_setup_chunk_libraries.png)
+We will call this the *setup* chunk. This is where we will do things like import data and load packages. For this lab, you will need the `palmerpenguins` and `tidyverse` packages, so they have been included in the setup.
+
+**Step 6:** Click the `Run` button ![](rmarkdown_chunk_run_button.png) on the right of the setup chunk. The `Run` button runs code so you can experiment with data before knitting the R Markdown document.
+
+## Text
+
+Text you write outside of code chunks is displayed normally in the knitted HTML document. For example, `Type your answer to question 1 here...` is displayed under Exercise 1.
+
+The `##` is used to denote a *header*. For example, `## Exercise 1` is displayed as
+![](exercise_1_img.png)
+after you knit. The number of `#` controls how big the header is (more `#` --> smaller).
+
+You're now ready to start working with the data! 
+
+# EDA with penguins
+
+This activity will introduce you to working with data in RStudio. We'll explore some data on penguins in Antarctica. 
+
+## Downloading the data
+
+There are two main ways we will access data in R:
+
+* Through a package which loads it directly
+
+* By importing a data file (e.g., a .csv or .txt file)
+
+Many features of R are available through modular collections of code called *packages*. Packages can contain functions, documentation, and datasets. Packages are downloaded to your computer with `install.packages("package_name")`, and loaded into your R session with `library(package_name)`.
+
+For this activity, the data is available through the `palmerpenguins` package.
+
+Remember: to run code in the console, type it in and hit enter, or copy and paste and hit enter.
+
+
+:::{.question}
+#### Question 1
+
+In the console, run the following code:
+
+```
+install.packages("palmerpenguins")
+library(palmerpenguins)
+```
+
+**Note:** `?` is used to access Help in R. You can use it for more than datasets. Try running `?library` and see what you get.
+:::
+
+:::{.question}
+#### Question 2
+
+The dataset loaded by palmerpenguins is called `penguins`. In the console, run
+```
+?penguins
+```
+
+How many rows are in the data? What does each row represent?
+:::
+
+
+**Note:** `tidyverse` is really a set of packages with a common philosophy about how to work with data.
+
+## Exploring the data
+
+:::{.question}
+#### Question 3
+
+Now let's look at our data. To do so, we'll need to install the `tidyverse` package, which has tools for data wrangling and visualization that we will use throughout the semester. By adapting the code from Exercise 1, install and load the `tidyverse` package. Then type the following code in a code chunk:
+```
+glimpse(penguins)
+```
+
+Now hit the `Run` button for that chunk. What information about the data does this provide? Type your answer in the R Markdown document, then knit. 
+:::
+
+:::{.question}
+#### Question 4
+
+It is hard to learn a lot about data from just the data table. Instead, let's make a plot! We'll start by looking at the distribution of bill length, which is a quantitative numeric variable, so we can look at the distribution with a histogram. Run
+```
+penguins %>%
+  ggplot(aes(x = bill_length_mm)) +
+  geom_histogram()
+```
+Describe the distribution of bill length in the penguins.
+:::
+
+What is this code doing? The `%>%`, called the *pipe*, means "take this, THEN do that". So, `penguins %>% ggplot(...)` means "take penguins, THEN make a plot". The `ggplot()` function provides lots of plot options. To make a histogram, we use `geom_histogram()`. We will cover more data wrangling and ggplot in Week 2.
+
+:::{.question}
+#### Question 5
+
+We can also look at the relationships between variables. We'll look at bill length and bill depth. Run
+```
+penguins %>%
+  ggplot(aes(x = bill_length_mm, y = bill_depth_mm)) +
+  geom_point()
+```
+Describe the relationship between bill length and bill depth.
+:::
+
+:::{.question}
+#### Question 6
+
+From Exercises 4 and 5, it looks like there could be different groups in the data. Perhaps different species of penguin?
+Fill in the `...` in the following code so that the color and shape depend on species:
+```
+penguins %>%
+  ggplot(aes(x = bill_length_mm, 
+  y = bill_depth_mm, 
+  color = ...,
+  shape = ...)) +
+  geom_point()
+```
+*Hint*: remember that you can find information on the variables in the dataset by running `?penguins`.
+:::
+
+
+:::{.question}
+#### Question 7
+
+Now suppose that I give you a penguin with bill length 50mm and bill depth 15mm. What species would you guess it is?
+
+**Note:** This is an example of a *prediction* question, one important use for statistical models.
+
+:::
+
+
+:::{.question}
+#### Question 8
+
+We saw that there are 344 penguins in the dataset. But how many penguins of each species are there? The `count()` function counts the number of observations in each group. 
+```r
+penguins %>%
+  count(species)
+```
+How many penguins of each species are there? 
+:::
+
+:::{.question}
+#### Question 9
+
+How many penguins are there on each island? 
+:::
+
+:::{.question}
+#### Question 10
+
+Now let's look at body mass. Create a histogram of body mass for the penguins. Then describe the distribution of body mass, based on the histogram.
+:::
+
+:::{.question}
+#### Question 11
+
+It can also be helpful to calculate summary statistics for distributions. Add the following code to a chunk, and run:
+```r
+penguins %>%
+  summarize(mean(body_mass_g))
+```
+
+However, we don't get a number when we run this code. What result do you get?
+:::
+
+**What's going on here?** `summarize` is used to calculated summary statistics for a data set, and `mean` is a function for calculating the mean. In `summarize`, we specify which statistics to calculate, and on which columns.
+
+Remember, you can learn more about a topic in R with `?`. Run `?NA` in the console to learn more about missing values.
+
+:::{.question}
+#### Question 12
+
+`NA` in R means `Not Available` and results from missing values in the data. Typically, if data contain `NA`s, then a summary of that data (e.g., the mean) will also contain `NA`s. There are a wide variety of methods for handling missing data, but for now we will just remove these values when calculating the summary statistic. Add the following code to your document, and run
+```r
+penguins %>%
+  summarize(mean(body_mass_g, na.rm=TRUE))
+```
+(there's no question to answer on this exercise).
+:::
+
+**What's going on here?** `na.rm` is one of the arguments in the `mean` function in R. If `na.rm=FALSE` (the default), then missing values are not removed before computing the mean. However, if `na.rm=T`, then missing values *are* removed when computing the mean. 
+
+:::{.question}
+#### Question 13
+
+How many rows did we remove by dropping `NA`s? The code below can tell us how many of the values in the `body_mass_g` column were missing, using the `is.na` function. 
+
+```r
+penguins %>%
+  summarize(num_mass_na = sum(is.na(body_mass_g)))
+```
+
+`is.na` returns `TRUE` if the value is missing, and `FALSE` otherwise. In R, `TRUE` gets coerced to 1, and `FALSE` to 0, when we do arithmetic. So, summing the `TRUE`s and `FALSE`s will tell me the number of `TRUE` values (in this case, the number of missing values!)
+:::
+
+
+:::{.question}
+#### Question 14
+
+Of course, `penguins` still has penguins from three different species. After all, the different species can have pretty different characteristics! So maybe it doesn't make sense to group all three species together into one histogram. Add and run the following code:
+```r
+penguins %>%
+  ggplot(aes(x = body_mass_g)) +
+  geom_histogram() +
+  facet_wrap(~species)
+```
+How does the distribution of body mass differ between species?
+:::
+
+**What's going on here?** `ggplot` builds plots layer by layer; the `+` means "add another layer". We've already seen `geom_histogram` used to create histograms. Now we're adding a *faceting* layer, which splits the plot by `species`. 
+
+:::{.question}
+#### Question 15
+
+If we're going to look at the distribution of body mass separately for each species, we should also calculate summary statistics separately for each species. Add and run the following code:
+```r
+penguins %>%
+  group_by(species) %>%
+  summarize(mean(body_mass_g, na.rm=TRUE))
+```
+Report the mean for each species.
+:::
+
+**What's going on here?** `summarize` calculates summary statistics for a dataset. `group_by` is often used before `summarize`, and it means "group the data by the values of a column". So, the code above means "take penguins, group the penguins by their species, and within each group calculate the mean body mass (omitting missing values)".
+
+Next, let's continue visualization with some scatterplots:
+
+:::{.question}
+#### Question 16
+Fill in the following code to create the scatterplot below (each `...` needs to be filled in).
+
+```r
+penguins %>%
+  drop_na() %>%
+  ggplot(aes(x = bill_length_mm, 
+             y = flipper_length_mm, 
+             color = island,
+             shape = island)) +
+  geom_point() +
+  facet_wrap(~sex) +
+  labs(x = "...",
+       y = "...",
+       color = "...",
+       shape = "...") +
+  theme_...()
+```
+
+```{r, echo=F, message=F, warning=F, fig.align='center', fig.width=8, fig.height=4}
+library(tidyverse)
+library(palmerpenguins)
+penguins %>%
+  drop_na() %>%
+  ggplot(aes(x = bill_length_mm, 
+             y = flipper_length_mm, 
+             color = island,
+             shape = island)) +
+  geom_point() +
+  facet_wrap(~sex) +
+  labs(x = "Bill length (mm)",
+       y = "Flipper length (mm)",
+       color = "Island",
+       shape = "Island") +
+  theme_bw()
+```
+:::
+
+:::{.question}
+#### Question 17
+Fill in the following code to create the boxplots below (each `...` needs to be filled in):
+
+```r
+penguins %>%
+  drop_na() %>%
+  ggplot(aes(x = ..., 
+             y = ...)) +
+  geom_...() +
+  labs(x = "...", 
+       y = "...", 
+       title = "...") +
+  theme_classic()
+```
+
+```{r, echo=F, warning=F, message=F, fig.align='center', fig.width=8, fig.height=4}
+penguins %>%
+  drop_na() %>%
+  ggplot(aes(x = flipper_length_mm, 
+             y = island)) +
+  geom_boxplot() +
+  labs(x = "Flipper length (mm)", 
+       y = "Island", 
+       title = "Distribution of flipper length by island") +
+  theme_classic()
+```
+:::
+
+:::{.question}
+#### Question 18
+Recreate this scatterplot using the `penguins` data. Do you think all the aesthetics used in the plot are useful?
+
+```{r, echo=F, warning=F, message=F, fig.align='center', fig.width=8, fig.height=3}
+penguins %>%
+  drop_na() %>%
+  ggplot(aes(x = flipper_length_mm, 
+             y = body_mass_g,
+             color = sex,
+             shape = sex,
+             size = bill_length_mm)) +
+  geom_point() +
+  facet_wrap(~species) +
+  labs(x = "Flipper length (mm)", 
+       y = "Body mass (g)",
+       color = "Sex", 
+       shape = "Sex",
+       size = "Bill length (mm)") +
+  theme_light()
+```
+:::

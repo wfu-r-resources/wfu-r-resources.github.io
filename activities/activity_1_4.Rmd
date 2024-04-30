@@ -1,0 +1,75 @@
+---
+title: "Activity 4: Data wrangling practice questions"
+output: 
+  rmdformats::robobook:
+    css: "homework.css"
+    highlight: pygments
+link-citations: yes
+---
+
+## Practice writing code
+
+In each of the questions below, write code (in R or Python) to produce the output from the original data.
+
+1. Original data:
+
+```{r, echo=F, message=F, warning=F}
+library(tidyverse)
+library(palmerpenguins)
+
+sub_data <- penguins |>
+  slice_sample(n=10) |>
+  select(species, island, bill_length_mm, bill_depth_mm)
+
+sub_data
+```
+
+Output:
+
+```{r, echo=F}
+sub_data |>
+  count(species, island)
+```
+
+2. Original data:
+
+```{r, echo=F}
+sub_data
+```
+
+Output:
+
+```{r, echo=F}
+sub_data |>
+  group_by(island, species) |>
+  summarize(mean_length = mean(bill_length_mm, na.rm=T))
+```
+
+
+3. Original data:
+
+```{r, echo=F}
+sub_data
+```
+
+Output:
+
+```{r, echo=F}
+sub_data |>
+  mutate(bill_ratio = bill_length_mm/bill_depth_mm)
+```
+
+
+4. Original data:
+
+```{r, echo=F}
+sub_data
+```
+
+Output:
+
+```{r, echo=F}
+sub_data |>
+  filter(species == "Adelie", 
+         island == "Dream")
+```

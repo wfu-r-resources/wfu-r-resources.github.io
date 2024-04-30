@@ -1,0 +1,106 @@
+---
+title: "Activity 1: Data wrangling across columns"
+output: 
+  rmdformats::robobook:
+    css: "homework.css"
+    highlight: pygments
+link-citations: yes
+---
+
+# Data
+
+For this class activity, we will create our own small toy dataset, so that we can explore data wrangling functions with a dataset that is easy to view and work with.
+
+Run the following code in R to create the toy dataset:
+
+```{r, message=F, warning=F}
+library(tidyverse)
+
+example_df <- data.frame(
+  x1 = c(1, 2, 3),
+  x2 = c("a", "b", "c"),
+  x3 = c(5, 1, 2),
+  y1 = c(0, 9, 2),
+  y2 = c(2, 7, 9),
+  z = c(0, 0, 0)
+)
+
+example_df
+```
+
+# Efficiently selecting multiple columns
+
+Suppose we want to `select` only the columns `y1` and `y2` in this toy dataset. A simple way to code this is:
+
+```{r}
+example_df |>
+  select(y1, y2)
+```
+
+However, with multiple columns, it can be difficult or tedious to list them all out by hand! Instead, we can `select` columns that meet certain *criteria*.
+
+For example, we can use the `starts_with` function to select all columns which begin with `y`:
+
+```{r}
+example_df |>
+  select(starts_with("y"))
+```
+
+
+:::{.question}
+#### Question 1
+Modify the code above to select the columns `x1`, `x2`, and `x3`, *without* listing them explicitly.
+:::
+
+What if we want only the columns which contain characters? (e.g. `"a"`, `"b"`, etc.) The `where` function returns the columns *where* a given condition is true:
+
+```{r}
+example_df |>
+  select(where(is.character))
+```
+
+:::{.question}
+#### Question 2
+Modify the code above to select only the *numeric* columns (hint: use `is.numeric`).
+:::
+
+:::{.question}
+#### Question 3
+Now select only the numeric columns which start with `x` (hint: use `&`)
+:::
+
+# Applying functions to multiple columns
+
+Suppose I want the mean of both `y1` and `y2`. One option, of course, is to list them explicitly in `summarize`:
+
+```{r}
+example_df |>
+  summarize(y1_mean = mean(y1),
+            y2_mean = mean(y2))
+```
+
+However, as before, this gets tedious with multiple columns! Instead, we can use `across` to apply a function *across* multiple columns:
+
+```{r}
+example_df |>
+  summarize(across(starts_with("y"), mean))
+```
+
+What if I want to apply multiple functions? I specify all the functions I want in a *list*:
+
+```{r}
+example_df |>
+  summarize(across(starts_with("y"), list(mean, sd)))
+```
+
+However, the names here aren't very useful! We can fix this by naming the elements of our list:
+
+```{r}
+example_df |>
+  summarize(across(starts_with("y"), list("mean" = mean, "sd" = sd)))
+```
+
+:::{.question}
+#### Question 4
+Modify the code above to calculate the median and IQR for the numeric columns which start with `x`. Do not list the columns explicitly.
+:::
