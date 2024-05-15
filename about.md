@@ -26,11 +26,11 @@ If you are looking for other tutorials and resources beyond the activities on th
 
 **Recommended books:**
 
-	* [Modern Data Science with R (3rd edition)](https://mdsr-book.github.io/mdsr3e/)
-	* [Advanced R (2nd edition)](https://adv-r.hadley.nz/index.html)
-	* [R for Data Science (1st edition)](https://r4ds.had.co.nz/)
-	* [R for Data Science (2nd edition)](https://r4ds.hadley.nz/)
-	* [Python for Data Analysis (3rd edition)](https://wesmckinney.com/book/)
+  * [Modern Data Science with R (3rd edition)](https://mdsr-book.github.io/mdsr3e/)
+  * [Advanced R (2nd edition)](https://adv-r.hadley.nz/index.html)
+  * [R for Data Science (1st edition)](https://r4ds.had.co.nz/)
+  * [R for Data Science (2nd edition)](https://r4ds.hadley.nz/)
+  * [Python for Data Analysis (3rd edition)](https://wesmckinney.com/book/)
 
 Other helpful resources for R, statistics, and data science:
 
