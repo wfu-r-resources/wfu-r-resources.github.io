@@ -1,5 +1,5 @@
 ---
-title: "Activity 4: k-means clustering"
+title: "Activity 4: Multiple regression"
 output: 
   rmdformats::robobook:
     css: "homework.css"
@@ -7,135 +7,42 @@ output:
 link-citations: yes
 ---
 
-## Unsupervised learning
+## Sparrows revisited
 
-One common use of computing in statistics and data science is implementing statistical methods. For example, in a previous assignment you have written functions for the Huber loss and to fit a linear model.
+In this class activity, we will revisit the `Sparrows` dataset, which looks at measurements of sparrows from Kent Island. Researchers measured the weight and wing length of 116 sparrows, under three different nest conditions: control (the researchers didn't change the nest), enlarged (the researchers made the nest bigger), and reduced (the researchers made the nest smaller). The `Sparrows` data is part of the `Stat2Data` package, and contains the following variables:
 
-Methods like linear regression belong to a class of methods called *supervised* learning: we have a set of explanatory variables, a response variable, and we want to predict the response. However, sometimes we don't have a response variable, and we want to identify structure in a dataset. When there is no response variable, we are doing *unsupervised* learning. Examples of unsupervised learning include clustering and dimension-reduction, and you can learn a lot about unsupervised learning in STA 662 Multivariate Statistics.
+* `Treatment`: nest condition (control, enlarged, or reduced)
+* `Weight`: sparrow weight (in grams)
+* `WingLength`: sparrow wing length (in mm)
 
-## Clustering
-
-One type of unsupervised learning is *clustering*, in which we group observations which look "similar" into *clusters*. For example, consider the `penguins` data from the `palmerpenguins` package, which contains information about three species of penguin: Adelie, Chinstrap, and Gentoo. If we plot flipper length and bill length, we can see differences between the species:
-
-```{r, warning=F, message=F}
-library(palmerpenguins)
-library(tidyverse)
-
-penguins |>
-  ggplot(aes(x = flipper_length_mm, y = bill_length_mm, color = species)) +
-  geom_point() +
-  labs(x = "Flipper length", y = "Bill length") +
-  theme_bw()
-```
-
-But what if we didn't know there were separate species of penguin? We would still see potential groups in the data, we just wouldn't have labels for them:
-
-```{r, warning=F, message=F}
-penguins |>
-  ggplot(aes(x = flipper_length_mm, y = bill_length_mm)) +
-  geom_point() +
-  labs(x = "Flipper length", y = "Bill length") +
-  theme_bw()
-```
-
-A clustering algorithm tries to systematically identify groups in the data. Often, the number of clusters $k$ is specified, and the algorithm clusters the observations into $k$ groups of points which look similar to each other, and different from the other groups. For example, here is the output of a basic k-means clustering algorithm with $k = 3$ on the flipper length and bill length measurements:
-
-
-```{r, warning=F, message=F}
-df <- penguins |>
-  select(flipper_length_mm, bill_length_mm) |>
-  drop_na() # remove missing values before clustering
-
-# cluster with k = 3
-clusters <- kmeans(df, 3, algorithm = "Lloyd", iter.max=20)$cluster
-
-df |>
-  mutate(cluster = as.factor(clusters)) |>
-  ggplot(aes(x = flipper_length_mm, y = bill_length_mm, color = cluster)) +
-  geom_point() +
-  labs(x = "Flipper length", y = "Bill length") +
-  theme_bw()
-```
-
-The resulting clusters align pretty closely with species, but not exactly.
-
-## The k-means algorithm
-
-There are a variety of ways to conduct k-means clustering. The most straightforward (though not necessarily the best) is Lloyd's algorithm:
-
-1. **Initialize:** Given a value of $k$, randomly select $k$ observations from the dataset to be the initial group means.
-2. **Calculate distances:** For every observation in the dataset, calculate the distance to each of the $k$ group means.
-3. **Assign groups:** Assign each observation to the nearest group mean.
-4. **Update means:** For each group, re-calculate the new group mean as the mean of the points assigned to that group in step 3. 
-5. **Iterate:** Repeat steps 2 - 4 until convergence (the group assignments stop changing) or until a maximum number of iterations has been reached.
-
-### Group means
-
-The k-means algorithm involves, as the name suggests, $k$ group means. Each group mean is a *vector*, containing the means of each variable for the groups. For example, consider the following matrix, which contains data for 6 observations on two variables, and the following vector of groups:
-
-```{r}
-example_mat <- matrix(c(1:12), nrow = 6, byrow = T)
-example_mat
-
-groups <- c(1, 1, 2, 2, 3, 3)
-
-# group mean for group 1
-colMeans(example_mat[groups == 1,])
-
-# group mean for group 2
-colMeans(example_mat[groups == 2,])
-
-# group mean for group 1
-colMeans(example_mat[groups == 3,])
-```
-
-The mean for group one is `c(2, 3)`, the mean for group 2 is `c(6, 7)`, and the mean for group 3 is `c(10, 11)`. Notice how we used the `colMeans` function to calculate means within each column of a matrix.
-
-### Calculating distances
-
-k-means requires us to define distances between observations. The typical distance measure used is Euclidean distance. Given vectors $x$ and $y$, Euclidean distance is given by $||x - y|| = \sqrt{\sum_i (x_i - y_i)^2}$.
-
-In R, we can use the `sweep` and `rowSums` functions to calculate distances with a matrix. For example, to find the distance between each observation in `example_mat` above and the group mean `c(2, 3)`:
-
-```{r}
-sqrt(rowSums(sweep(example_mat, 2, c(2, 3))^2))
-```
-
-Read the help information for the `sweep` and `rowSums` functions, and make sure you understand what they are doing.
-
-### Other helpful functions
-
-To implement the k-means algorithm, you may find two other functions helpful: `apply` and `which.min`.
-
-## Implementation
-
-In this assignment, you will write a k-means clustering function using Lloyd's algorithm as described above. 
-
-**Requirements:** 
-
-Your function should take three inputs:
-
-* The data to cluster
-* The number of clusters, $k$
-* The maximum number of iterations
-
-Your function should return a list containing two components:
-
-* The group assignments for each observation in the data
-* A matrix containing the $k$ group means
-
-Your function should be applicable to any dataset; do not write it just in terms of the penguins data.
-
-You may **not**:
-
-* Use any existing implementation of the k-means algorithm
-* Read any source code for other implementations of the algorithm
-* Use AI to generate an implementation of the algorithm
-
+## Questions
 
 :::{.question}
 #### Question 1
 
-Write a k-means clustering function with the above specifications, and demonstrate that it works with the penguins data.
-
+Write down the population regression model, with weight as the response, and wing length and treatment as the predictors.
 :::
+
+:::{.question}
+#### Question 2
+
+Use the following code to fit the model in R. Note that we can include multiple predictors by "adding" them together in the regression formula (we don't really add them mathematically; the `+` just means "put another predictor in the model").
+
+```{r eval=F}
+sparrow_lm <- lm(Weight ~ Treatment + WingLength, data = Sparrows)
+summary(sparrow_lm)
+```
+:::
+
+:::{.question}
+#### Question 3
+
+What is the average change in weight associated with a 1mm increase in wing length, for sparrows from enlarged nests?
+:::
+
+:::{.question}
+#### Question 4
+
+What is the estimated difference in weight for sparrows from enlarged vs. control nests, with the same wing length?
+:::
+

@@ -1,0 +1,255 @@
+---
+title: "Activity 3: Function and iteration practice questions"
+output: 
+  rmdformats::robobook:
+    css: "homework.css"
+    highlight: pygments
+link-citations: yes
+---
+
+## Practice with iteration in R
+
+For each of the following questions, either write the output of the code, or explain why it gives an error. (Some questions will run correctly, others will cause errors)
+
+1.
+
+```{r, eval=F}
+output <- rep(NA, 10)
+for(i in 1:5){
+  output[i] <- i
+}
+
+output[6]
+```
+
+2.
+
+```{r, eval=F}
+output <- rep(0, 10)
+for(i in 1:10){
+  output[i] <- i
+}
+
+output[6]
+```
+
+3. 
+
+```{r, eval=F}
+output <- rep(0, 10)
+for(i in 1:10){
+  output[i] <- i
+}
+
+output[11]
+```
+
+4. 
+
+```{r, eval=F}
+output <- rep(1, 10)
+for(i in 2:10){
+  output[i] <- i + output[i-1]
+}
+
+output[5]
+```
+
+5. 
+
+```{r, eval=F}
+output <- rep(1, 10)
+for(i in 2:10){
+  output[i] <- i + output[i+1]
+}
+
+output[5]
+```
+
+6.
+
+```{r, eval=F}
+x <- list()
+for(i in 1:10){
+  x[i] <- i
+}
+x[2] + 1
+```
+
+7.
+
+```{r, eval=F}
+mat <- matrix(0, nrow=5, ncol=3)
+for(i in 1:5){
+  for(j in 1:3){
+    mat <- i + j
+  }
+}
+
+mat
+```
+
+8.
+
+```{r, eval=F}
+mat <- matrix(0, nrow=5, ncol=3)
+for(i in 1:5){
+  for(j in 1:3){
+    mat[j, i] <- i + j
+  }
+}
+
+mat
+```
+
+9.
+
+```{r, eval=F}
+mat <- matrix(1, 3, 3)
+for(i in 2:3){
+  for(j in 2:3){
+    mat[i,j] <- mat[i-1, j-1] + mat[i, j-1]
+  }
+}
+
+mat
+```
+
+10.
+
+```{r, eval=F}
+f1 <- function(n, groups){
+  x <- matrix(1, nrow=n, ncol=n)
+  unique_groups = unique(groups)
+  means <- matrix(nrow = length(unique_groups), ncol = n)
+  for(i in 1:length(unique_groups)){
+    means[i,] <- colMeans(x[groups == unique_groups[i],])
+  }
+  
+  return(means)
+}
+
+f1(5, groups = c(1, 1, 2, 2, 2))
+```
+
+## Practice with functions
+
+For each question, predict what will happen when the code is run. Then run the code and check whether your prediction was correct.
+
+11. 
+
+```{r, eval=F}
+x <- 10
+
+g02 <- function(x){
+  x <- x + 1
+  return(x)
+}
+
+g02(x)
+x + 1
+```
+
+12.
+
+```{r, eval=F}
+x <- 10
+
+g02 <- function(x){
+  x <- x + 1
+  return(x)
+}
+
+x <- g02(x)
+x + 1
+```
+
+13. 
+
+```{r, eval=F}
+g02 <- function(y){
+  y <- y - 1
+  return(y)
+}
+
+g02(g02(20))
+```
+
+14. 
+
+```{r, eval=F}
+x <- 10
+test_fun <- function(x = 11){
+  return(x)
+}
+test_fun()
+x
+```
+
+15. 
+
+```{r, eval=F}
+x <- 10
+test_fun <- function(y = 11){
+  return(x + 1)
+}
+test_fun()
+x
+```
+
+16. 
+
+```{r, eval=F}
+x <- 10
+test_fun <- function(y = 11){
+  x <- x + 1
+  return(x + 1)
+}
+test_fun()
+x
+```
+
+17. 
+
+```{r, eval=F}
+x <- 10
+test_fun <- function(x = 11){
+  x <- x + 1
+  return(x + 1)
+}
+test_fun()
+x
+```
+
+18. 
+
+```{r, eval=F}
+x <- 10
+test_fun <- function(x = 11){
+  x <- x + 1
+  return(x + 1)
+}
+x <- test_fun(x)
+x
+```
+
+19.
+
+```{r, eval=F}
+f1 <- function(x = 1){
+  return(x + 1)
+}
+g1 <- function(x){
+  return(f1() + x)
+}
+
+f1(g1(3))
+```
+
+## Practice with anonymous functions
+
+20. Use the `integrate()` and an anonymous function to find the area under the curve for the following functions:
+
+* `y = x^2 - x` for x in $[0, 1]$
+* `y = sin(x) + cos(x)` for x in $[-\pi, \pi]$
+* `y = exp(x)/x` for x in $[10, 20]$

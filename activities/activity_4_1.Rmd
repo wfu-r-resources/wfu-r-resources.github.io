@@ -1,0 +1,79 @@
+---
+title: "Activity 1: Iteration"
+output: 
+  rmdformats::robobook:
+    css: "homework.css"
+    highlight: pygments
+link-citations: yes
+---
+
+## Practice with `for` loops
+
+The purpose of this section is to give you some more practice working with for loops and sequences, which are useful tools for efficiently repeating a process many times. Here is an example for loop that calculates $\sqrt{x}$ for a sequence of numbers $x = 0, 0.1, 0.2, ..., 0.9, 1$:
+
+```r
+x <- seq(from=0, to=1, by=0.1)
+sqrt_x <- rep(0, length(x))
+for(i in 1:length(x)){
+  sqrt_x[i] <- sqrt(x[i])
+}
+sqrt_x
+```
+
+Below are some short practice questions to help you get more comfortable creating `for` loops.
+
+:::{.question}
+#### Question 1
+
+Modify the loop above so that instead of calculating $\sqrt{x}$, we calculate $x^{1/3}$.
+:::
+
+:::{.question}
+#### Question 2
+
+Modify the loop from Question 1 so that instead of considering $x = 0, 0.1, 0.2, ..., 0.9, 1$ (i.e. the numbers between 0 and 1, in increments of 0.1), we consider $x = 0, 0.05, 0.10, 0.15, ..., 1.95, 2$ (the numbers between 0 and 2, in increments of 0.05).
+:::
+
+**Note:** In Questions 1 and 2, you are applying a function to each element in a vector. Here you have used a `for` loop, because the purpose of these questions is to practice loops. However, `for` loops are not always the most efficient way to write code. Instead, many functions in R are *vectorized*: if you apply the function to a vector, it is applied to each element of the vector. For example,
+
+```r
+x <- seq(from=0, to=1, by=0.1)
+sqrt_x <- sqrt(x)
+sqrt_x
+```
+
+produces the same output as the `for` loop above.
+
+:::{.question}
+#### Question 3
+
+Re-write the code for Question 1, using vectorization instead of the `for` loop.
+:::
+
+
+## More practice with `for` loops
+
+Suppose we want to simulate a single draw from a normal distribution with mean 0 and standard deviation 1. The code in R is
+
+```r
+rnorm(n=1, mean=0, sd=1)
+```
+
+:::{.question}
+#### Question 4
+Fill in the following `for` loop to create a sample of 1000 draws from a normal distribution and plot a histogram of the results:
+
+```r
+n <- ...
+normal_sample <- rep(NA, n)
+for(i in 1:n){
+  normal_sample[i] <- ...
+}
+hist(normal_sample)
+```
+:::
+
+:::{.question}
+#### Question 5
+Look at the documentation for the `rnorm` function in R (you can get this with `?rnorm` in the console). Can you change the inputs to the `rnorm` function so that you take a sample of 1000 *without* using a loop?
+:::

@@ -7,7 +7,7 @@
 
     
     
-    <title>Activity 2: Writing functions</title>
+    <title>Activity 2: Linear regression diagnostics and transformations</title>
 
         <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -1641,23 +1641,15 @@ margin-left: 0 !important;
    <div class="book with-summary">
       <div class="book-summary">
         <ul>
-          <li class="title">Activity 2: Writing functions</li>
+          <li class="title">Activity 2: Linear regression diagnostics
+and transformations</li>
           <li class="divider"></li>
         </ul>
         <nav role="navigation" id="toc">
           <ul>
-          <li><a href="#writing-a-function-to-calculate-the-mean" id="toc-writing-a-function-to-calculate-the-mean">Writing a
-          function to calculate the mean</a></li>
-          <li><a href="#weighted-means" id="toc-weighted-means">Weighted
-          means</a></li>
-          <li><a href="#relu" id="toc-relu">ReLU</a></li>
-          <li><a href="#huber-loss-function" id="toc-huber-loss-function">Huber loss function</a></li>
-          <li><a href="#fitting-linear-regression-models" id="toc-fitting-linear-regression-models">Fitting linear
-          regression models</a></li>
-          <li><a href="#standard-deviation" id="toc-standard-deviation">Standard deviation</a></li>
-          <li><a href="#p-norm" id="toc-p-norm">p-norm</a></li>
-          <li><a href="#kurtosis" id="toc-kurtosis">Kurtosis</a></li>
-          <li><a href="#correlation" id="toc-correlation">Correlation</a></li>
+          <li><a href="#doctors-and-hospitals" id="toc-doctors-and-hospitals">Doctors and hospitals</a></li>
+          <li><a href="#assumptions" id="toc-assumptions">Assumptions</a></li>
+          <li><a href="#questions" id="toc-questions">Questions</a></li>
           </ul>
         </nav>
         <ul class="authors">
@@ -1674,7 +1666,8 @@ margin-left: 0 !important;
       
    
         
-      <h1 class="title">Activity 2: Writing functions</h1>
+      <h1 class="title">Activity 2: Linear regression diagnostics and
+transformations</h1>
       
         
 
@@ -1682,294 +1675,137 @@ margin-left: 0 !important;
       
    
 <!-- Don't indent these lines or it will mess pre blocks indentation --> 
-<div id="writing-a-function-to-calculate-the-mean" class="section level2">
-<h2>Writing a function to calculate the mean</h2>
-<p>The <em>mean</em> of numbers <span class="math inline">\(x_1,...,x_n\)</span> is their average:</p>
-<p><span class="math display">\[\frac{x_1 + x_2 + \cdots +
-x_n}{n}\]</span> In R, we can calculate the mean with the
-<code>mean</code> function. For example:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>))</span></code></pre></div>
-<pre><code>## [1] 2</code></pre>
+<div id="doctors-and-hospitals" class="section level2">
+<h2>Doctors and hospitals</h2>
+<p>In this activity, you will practice checking the assumptions for
+linear regression models. This activity investigates the relationship
+between the number of doctors in a county, and the number of hospitals.
+The data come from a random sample of 53 counties in the US, and are
+contained in the <code>CountyHealth</code> dataset from the
+<code>Stat2Data</code> package. The dataset includes the following
+variables:</p>
+<ul>
+<li><code>County</code>: the name and state of the county</li>
+<li><code>MDs</code>: the number of medical doctors in the county</li>
+<li><code>Hospitals</code>: number of hospitals in the county</li>
+<li><code>Beds</code>: the number of beds in the hospital</li>
+</ul>
+<p>We are interested in the relationship between the number of hospitals
+and the number of doctors in a county. To begin, we’ll assume that the
+relationship is linear:</p>
+<p><span class="math inline">\(\text{doctors}_i = \beta_0 + \beta_1
+\text{hospitals}_i + \varepsilon_i\)</span></p>
+</div>
+<div id="assumptions" class="section level2">
+<h2>Assumptions</h2>
+<p>When we fit a linear model, we typically make certain assumptions
+about the data. Common assumptions include:</p>
+<ul>
+<li><strong>Shape:</strong> the true relationship is actually
+linear</li>
+<li><strong>Constant variance:</strong> the noise term <span class="math inline">\(\varepsilon_i\)</span> has constant variance (also
+called <em>homoscedasticity</em>)</li>
+<li><strong>Normality:</strong> <span class="math inline">\(\varepsilon_i\)</span> follows a normal
+distribution</li>
+<li><strong>Independence:</strong> The error terms <span class="math inline">\(\varepsilon_i\)</span> are independent</li>
+</ul>
+<p>Constant variance, normality, and independence can succinctly be
+written <span class="math inline">\(\varepsilon_i \overset{iid}{\sim}
+N(0, \sigma^2)\)</span>.</p>
+<p><strong>Note:</strong> None of these assumptions is needed to
+actually <em>fit</em> the model (we can minimize the sum of squared
+residuals regardless of whether the model is reasonable). However,
+different assumptions are needed for different uses of the model. If we
+want to interpret the coefficients, we want the shape assumption to be
+at least approximately correct. If we want to do inference, then the
+constant variance, normality, and independence assumptions may be
+needed.</p>
+</div>
+<div id="questions" class="section level2">
+<h2>Questions</h2>
 <div id="question-1" class="section level4 question">
 <h4>Question 1</h4>
-<p>Write your own mean function, called <code>my_mean</code>, that
-calculates the mean of a vector. The input to your function should be a
-vector, and the output should be the mean of the values in that vector.
-You may <em>not</em> use the built-in <code>mean</code> function in R,
-but you <em>may</em> use the <code>sum</code> and <code>length</code>
-functions.</p>
+<p>Fill in the code below to fit the linear regression model, and save
+the fitted model as <code>health_lm</code> in R:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>health_lm <span class="ot">&lt;-</span> <span class="fu">lm</span>(... <span class="sc">~</span> ..., <span class="at">data =</span> ...)</span></code></pre></div>
 </div>
+<p>Now, to assess the shape and constant variance assumptions, we use a
+<em>residual plot</em>, which plots the residuals (in this case, <span class="math inline">\(\text{doctors}_i -
+\widehat{\text{doctors}}_i\)</span>) against the fitted values (in this
+case, <span class="math inline">\(\widehat{\text{doctors}}_i\)</span>).
+To get residuals and fitted values, we will use the <code>predict</code>
+and <code>residuals</code> functions in R. The <code>predict</code>
+function takes in a fitted model (in this case, <code>health_lm</code>),
+and outputs predictions for the observed data. The
+<code>residuals</code> function takes in a fitted model, and outputs the
+observed residuals.</p>
 <div id="question-2" class="section level4 question">
 <h4>Question 2</h4>
-<p>Check that your function works by comparing the output with R’s
-<code>mean</code> function for several different input vectors.</p>
+<p>Run the code below to make a residual plot for the fitted model:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>CountyHealth <span class="sc">|&gt;</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">yhat =</span> <span class="fu">predict</span>(health_lm),</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>         <span class="at">residuals =</span> <span class="fu">residuals</span>(health_lm)) <span class="sc">|&gt;</span></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> yhat, <span class="at">y =</span> residuals)) <span class="sc">+</span></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">slope =</span> <span class="dv">0</span>, <span class="at">intercept =</span> <span class="dv">0</span>, </span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>              <span class="at">color =</span> <span class="st">&quot;blue&quot;</span>, <span class="at">lwd =</span> <span class="fl">1.2</span>) <span class="sc">+</span></span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Predicted number of doctors&quot;</span>,</span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Residual&quot;</span>) <span class="sc">+</span></span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code></pre></div>
 </div>
-</div>
-<div id="weighted-means" class="section level2">
-<h2>Weighted means</h2>
-<p>A <em>weighted</em> mean is similar to the usual average, but now we
-add a <em>weight</em> to each value. The observations with greater
-weights contribute more to the weighted mean.</p>
-<p>The weighted mean of <span class="math inline">\(x_1,...,x_n\)</span>
-with weights <span class="math inline">\(w_1,...,w_n\)</span> is</p>
-<p><span class="math display">\[\frac{w_1 x_1 + w_2 x_2 + \cdots + w_n
-x_n}{w_1 + w_2 + \cdots + w_n}\]</span> The usual arithmetic mean is a
-special case of the weighted mean with <span class="math inline">\(w_1 =
-w_2 = \cdots = w_n = 1\)</span>.</p>
+<p>And to assess the normality assumption, we use a QQ plot (this is
+short for <em>quantile-quantile</em> plot, which means we compare the
+quantiles of the observed residuals to the quantiles of a normal
+distribution).</p>
 <div id="question-3" class="section level4 question">
 <h4>Question 3</h4>
-<p>Modify your <code>my_mean</code> function from Exercise 1 so that it
-now takes <strong>two</strong> inputs – a vector of values
-<code>x</code>, and a vector of weights <code>w</code> – and returns the
-<em>weighted</em> mean of <code>x</code> with weights <code>w</code>.
-<em>Hint</em>: If <code>x</code> and <code>w</code> are two vectors of
-the same length, then <code>x*w</code> is a vector created by
-multiplying each entry of <code>x</code> with the corresponding entry of
-<code>w</code>.</p>
+<p>Run the code below to make a QQ plot for the fitted model:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>CountyHealth <span class="sc">|&gt;</span></span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">residuals =</span> <span class="fu">residuals</span>(health_lm)) <span class="sc">|&gt;</span></span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">sample =</span> residuals)) <span class="sc">+</span></span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>  <span class="fu">geom_qq</span>() <span class="sc">+</span></span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>  <span class="fu">geom_qq_line</span>() <span class="sc">+</span></span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Theoretical normal quantiles&quot;</span>,</span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Observed residual quantiles&quot;</span>) <span class="sc">+</span></span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code></pre></div>
 </div>
+<p>Recall that:</p>
+<ul>
+<li>the shape assumption is reasonable if the residuals appear to be
+scattered randomly above and below 0, with no clear patterns.</li>
+<li>the constant variance assumption is reasonable if the band of
+residuals has relatively constant width.</li>
+<li>the normality assumption is reasonable if the QQ plot looks
+approximately linear (the points fall close to the line)</li>
+</ul>
 <div id="question-4" class="section level4 question">
 <h4>Question 4</h4>
-<p>When we calculate a mean, we usually don’t need weights. Modify your
-<code>my_mean</code> function from Exercise 3 so that the
-<em>default</em> weights are all 1.</p>
+<p>Using the residual plot and the QQ plot, assess whether the shape,
+constant variance, and normality assumptions are reasonable.</p>
 </div>
+<div id="transformations" class="section level3">
+<h3>Transformations</h3>
+<p>What do we do when the assumptions do not appear to be satisfied? One
+option is to transform either the explanatory or response variable, or
+both. Common transformations include square roots, logs, squaring, and
+reciprocals. For count variables (like the number of doctors), a square
+root is often used.</p>
+<p>Consider the model with the square root of doctors as the
+response:</p>
+<p><span class="math display">\[\sqrt{\text{doctors}_i} = \beta_0 +
+\beta_1 \text{hospitals}_i + \varepsilon_i\]</span></p>
 <div id="question-5" class="section level4 question">
 <h4>Question 5</h4>
-<p>Check that your function from Exercise 4 works by running the
-following:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co"># should be 2</span></span>
-<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="fu">my_mean</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>))</span>
-<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a></span>
-<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="co"># should be 2</span></span>
-<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="fu">my_mean</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>), <span class="at">w =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>))</span>
-<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a></span>
-<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a><span class="co"># should be 1.5</span></span>
-<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a><span class="fu">my_mean</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>), <span class="at">w =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>))</span></code></pre></div>
+<p>Use the code below to fit the new model, and save the fitted model as
+<code>health_lm2</code> in R:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>health_lm2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">sqrt</span>(MDs) <span class="sc">~</span> Hospitals, <span class="at">data =</span> CountyHealth)</span></code></pre></div>
 </div>
-</div>
-<div id="relu" class="section level2">
-<h2>ReLU</h2>
-<p>Neural networks are a way to learn complex prediction models.
-Fundamentally, a neural network works by passing input data through a
-series of nodes; the output of one layer of nodes is the input for the
-next layer. Each time the data goes through a node, an <em>activation
-function</em> is applied to transform the output (this allows the
-network to model nonlinear relationships).</p>
-<p>Common activation functions include the ReLU (rectified linear
-unit):</p>
-<p><span class="math display">\[f(x) = \begin{cases} x &amp; x &gt; 0 \\
-0 &amp; x \leq 0 \end{cases}\]</span> and the <em>leaky</em> ReLU, with
-parameter <span class="math inline">\(a\)</span>:</p>
-<p><span class="math display">\[f_a(x) = \begin{cases} x &amp; x &gt; 0
-\\ a \cdot x &amp; x \leq 0 \end{cases}\]</span> Indeed, the ReLU could
-be considered a special case of the leaky ReLU with <span class="math inline">\(a = 0\)</span>.</p>
-<p>Here is an implementation of the ReLU function in R:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>relu <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
-<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>  <span class="cf">if</span>(x <span class="sc">&gt;</span> <span class="dv">0</span>){</span>
-<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>    <span class="fu">return</span>(x)</span>
-<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
-<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>    <span class="fu">return</span>(<span class="dv">0</span>)</span>
-<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>  }</span>
-<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>}</span></code></pre></div>
-<p>This <code>relu</code> function works for single inputs:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">relu</span>(<span class="dv">1</span>)</span></code></pre></div>
-<pre><code>## [1] 1</code></pre>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">relu</span>(<span class="sc">-</span><span class="dv">1</span>)</span></code></pre></div>
-<pre><code>## [1] 0</code></pre>
-<p>However, it does not work for vectors of length greater than 1:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="fu">relu</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="sc">-</span><span class="dv">1</span>))</span></code></pre></div>
-<pre><code>## Error in if (x &gt; 0) {: the condition has length &gt; 1</code></pre>
-<p>The issue here is that <code>if(x &gt; 0)</code> in the
-<code>if...else...</code> statement is not vectorized. That is, R is
-expecting a single true or false, not a vector. To vectorize this
-function we can use the <code>ifelse</code> function (which IS
-vectorized).</p>
 <div id="question-6" class="section level4 question">
 <h4>Question 6</h4>
-<p>Re-write the <code>relu</code> function above, using the
-<code>ifelse</code> function, so that <code>relu</code> can be applied
-to vectors.</p>
+<p>Perform diagnostics with your new model and confirm that the
+transformation has improved the suitability of the model
+assumptions.</p>
 </div>
-<div id="question-7" class="section level4 question">
-<h4>Question 7</h4>
-<p>Adapt your <code>relu</code> function to create a new function,
-<code>leaky_relu</code>, which takes TWO inputs, <span class="math inline">\(x\)</span> and <span class="math inline">\(a\)</span>, and returns <span class="math inline">\(f_a(x)\)</span> as defined above. Make <span class="math inline">\(a = 0\)</span> the default value.</p>
-</div>
-</div>
-<div id="huber-loss-function" class="section level2">
-<h2>Huber loss function</h2>
-<p>The Huber loss function is defined as</p>
-<p><span class="math display">\[\psi(x) = \begin{cases} x^2 &amp;
-\text{if } |x| \leq 1 \\ 2|x| - 1 &amp; \text{if } |x| &gt;
-1  \end{cases}\]</span></p>
-<p>This function is quadratic on the interval <span class="math inline">\([-1,1]\)</span>, and linear outside of this
-interval. It transitions from quadratic to linear “smoothly”, and it is
-often used in place of the usual squared error loss for robust
-estimation.</p>
-<div id="question-8" class="section level4 question">
-<h4>Question 8</h4>
-<p>Write a function <code>huber()</code> that takes as an input a number
-<span class="math inline">\(x\)</span>, and returns the Huber value
-<span class="math inline">\(\psi(x)\)</span>. Here is a code skeleton to
-get you started:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a>huber <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
-<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a></span>
-<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a>}</span></code></pre></div>
-<p><em>Hint:</em> The <code>ifelse</code> function will be helpful!</p>
-</div>
-<div id="question-9" class="section level4 question">
-<h4>Question 9</h4>
-<p>The <code>ifelse</code> function is vectorized, so if you used the
-<code>ifelse</code> function above, your <code>huber</code> function
-should also be vectorized.</p>
-<p>Check that the function is vectorized: e.g.,
-<code>huber(c(0.5, 1, 2))</code> should return
-<code>0.25 1.00 3.00</code></p>
-</div>
-<p>The Huber function can be modified so that the transition from
-quadratic to linear happens at an arbitrary cutoff value <span class="math inline">\(a\)</span>, as in:</p>
-<p><span class="math display">\[\psi_a(x) = \begin{cases} x^2 &amp;
-\text{if } |x| \leq a \\ 2a|x| - a^2 &amp; \text{if } |x| &gt;
-a  \end{cases}\]</span></p>
-<div id="question-10" class="section level4 question">
-<h4>Question 10</h4>
-<p>Update your <code>huber()</code> function so that it takes two
-arguments: <span class="math inline">\(x\)</span>, a number at which to
-evaluate the loss, and <span class="math inline">\(a\)</span> a number
-representing the cutoff value. It should now return <span class="math inline">\(\psi_a(x)\)</span>, as defined above. Make <span class="math inline">\(a = 1\)</span> the <em>default</em> in your
-<code>huber</code> function.</p>
-</div>
-</div>
-<div id="fitting-linear-regression-models" class="section level2">
-<h2>Fitting linear regression models</h2>
-<p>The following code generates data <span class="math inline">\(X_i
-\sim N(0, 1)\)</span>, <span class="math inline">\(\varepsilon_i \sim
-N(0, 1)\)</span>, and</p>
-<p><span class="math display">\[Y_i = \beta_0 + \beta_1 X_i +
-\varepsilon_i\]</span></p>
-<p>with <span class="math inline">\(\beta_0 = \beta_1 = 1\)</span>.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">100</span></span>
-<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n)</span>
-<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a>noise <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n)</span>
-<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">+</span> x <span class="sc">+</span> noise</span></code></pre></div>
-<p>To estimate <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span>, we can use the <code>lm</code>
-function:</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="fu">lm</span>(y <span class="sc">~</span> x)</span></code></pre></div>
-<pre><code>## 
-## Call:
-## lm(formula = y ~ x)
-## 
-## Coefficients:
-## (Intercept)            x  
-##      0.9877       1.1623</code></pre>
-<p>How are these estimated coefficients calculated? Mathematically, the
-vector of estimated coefficients <span class="math inline">\(\widehat{\beta}\)</span> is given by</p>
-<p><span class="math display">\[\widehat{\beta} = (X^T X)^{-1} X^T
-Y\]</span> where <span class="math inline">\(X\)</span> is the
-<em>design matrix</em> and <span class="math inline">\(Y\)</span> is the
-vector of observed responses. For the model above,</p>
-<p><span class="math display">\[\widehat{\beta} = \begin{bmatrix}
-\widehat{\beta}_0 \\
-\widehat{\beta}_1
-\end{bmatrix} \hspace{0.5cm} X = \begin{bmatrix}
-1 &amp; x_1 \\
-1 &amp; x_2 \\
-1 &amp; x_3 \\
-\vdots &amp; \vdots \\
-1 &amp; x_n
-\end{bmatrix} \hspace{0.5cm} Y = \begin{bmatrix}
-y_1 \\
-y_2 \\
-y_3 \\
-\vdots \\
-y_n
-\end{bmatrix}\]</span></p>
-<p>How would we do this math in R? Since <span class="math inline">\(X\)</span> is a matrix, and <span class="math inline">\(\widehat{\beta}\)</span> and <span class="math inline">\(Y\)</span> are both vectors, we want to work with
-<em>matrices</em> and <em>vectors</em> in R!</p>
-<ul>
-<li>The vector <code>y</code> generated above already represents <span class="math inline">\(Y\)</span> (by default, vectors in R are column
-vectors)</li>
-<li>We need to create the design matrix <span class="math inline">\(X\)</span>, by adding a column of 1s to the
-<code>x</code> simulated above. The following code creates <span class="math inline">\(X\)</span>:</li>
-</ul>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a>X_mat <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="dv">1</span>, x)</span></code></pre></div>
-<ul>
-<li>Matrix multiplication in R is done with <code>%*%</code>. For
-example, if <code>A</code> and <code>B</code> are conformal
-matrices/vectors, then <span class="math inline">\(AB\)</span> would be
-calculated with <code>A %*% B</code></li>
-<li>Transposes are calculated with <code>t()</code>. E.g., <span class="math inline">\(A^T\)</span> is given by <code>t(A)</code></li>
-<li>Matrix inverses are calculated with <code>solve()</code>. E.g.,
-<span class="math inline">\(A^{-1}\)</span> is given by
-<code>solve(A)</code></li>
-</ul>
-<div id="question-11" class="section level4 question">
-<h4>Question 11</h4>
-<p>Using this information, write a function called <code>my_lm</code>
-which will calculate the estimated coefficients <span class="math inline">\(\widehat{\beta}\)</span> given a vector of
-responses <code>y</code> and a design matrix <code>X_mat</code>.</p>
-</div>
-</div>
-<div id="standard-deviation" class="section level2">
-<h2>Standard deviation</h2>
-<p>The <em>sample standard deviation</em> of numbers <span class="math inline">\(x_1,...,x_n\)</span> is given by</p>
-<p><span class="math display">\[\widehat{\sigma} =
-\sqrt{\frac{1}{n-1}\sum \limits_{i=1}^n (x_i - \bar{x})^2},\]</span></p>
-<p>where <span class="math inline">\(\bar{x} = \frac{1}{n} \sum
-\limits_{i=1}^n x_i\)</span>.</p>
-<div id="question-12" class="section level4 question">
-<h4>Question 12</h4>
-<p>Write a function called <code>my_sd</code> which calculates the
-standard deviation of a vector in R.</p>
-</div>
-</div>
-<div id="p-norm" class="section level2">
-<h2>p-norm</h2>
-<p>The <span class="math inline">\(\ell_p\)</span> norm of a vector
-<span class="math inline">\(x = (x_1,...,x_k)\)</span> is given by</p>
-<p><span class="math display">\[||x||_p = \left( \sum \limits_{i=1}^k
-|x_i|^p \right)^{1/p}\]</span> :::{.question} #### Question 13</p>
-<p>Write a function called <code>p_norm</code> in R, which takes two
-inputs: a vector <code>x</code>, and <code>p</code>, and returns <span class="math inline">\(\ell_p(x)\)</span>. Make <code>p = 2</code> the
-default value (this corresponds to the usual Euclidean norm). :::</p>
-</div>
-<div id="kurtosis" class="section level2">
-<h2>Kurtosis</h2>
-<p>Suppose we have a sample <span class="math inline">\(X_1,...,X_n\)</span> from some population
-distribution. We know that the mean describes the “center” of the
-distribution, the standard deviation is a measure of variability, and
-skewness describes the shape of the distribution.</p>
-<p>Another quantity we can calculate to describe a distribution is
-<em>kurtosis</em>, which describes how heavy the tails of the
-distribution are. The <em>sample kurtosis</em> is calculated by:</p>
-<p><span class="math display">\[\dfrac{\frac{1}{n} \sum \limits_{i=1}^n
-(X_i - \bar{X})^4}{\left( \frac{1}{n} \sum \limits_{i=1}^n (X_i -
-\bar{X})^2 \right)^2} \ \ - \ \ 3\]</span></p>
-<p>where <span class="math inline">\(\bar{X}\)</span> is the sample
-mean.</p>
-<div id="question-14" class="section level4 question">
-<h4>Question 14</h4>
-<p>Write a function in R to calculate the sample kurtosis. Your function
-should take in one argument: a vector <code>x</code>.</p>
-</div>
-</div>
-<div id="correlation" class="section level2">
-<h2>Correlation</h2>
-<p>Suppose we have a sample <span class="math inline">\((X_1,
-Y_1),...,(X_n, Y_n)\)</span> of <span class="math inline">\(n\)</span>
-observations collected on two variables, <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>. The strength of the linear
-relationship between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> is measured by their
-<em>correlation</em>, and the sample correlation is calculated with the
-following formula:</p>
-<p><span class="math display">\[\dfrac{ \sum \limits_{i=1}^n (X_i -
-\bar{X})(Y_i - \bar{Y})}{\left( \sum \limits_{i=1}^n (X_i - \bar{X})^2
-\right)^{1/2} \left( \sum \limits_{i=1}^n (Y_i - \bar{Y})^2
-\right)^{1/2}}\]</span></p>
-<div id="question-15" class="section level4 question">
-<h4>Question 15</h4>
-<p>Write a function in R to calculate the sample correlation. Your
-function should take in two arguments: a vector <code>x</code> and a
-vector <code>y</code>.</p>
 </div>
 </div>
 

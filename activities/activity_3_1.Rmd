@@ -1,5 +1,5 @@
 ---
-title: "Activity 1: Iteration"
+title: "Activity 1: Linear regression and least squares"
 output: 
   rmdformats::robobook:
     css: "homework.css"
@@ -7,73 +7,107 @@ output:
 link-citations: yes
 ---
 
-## Practice with `for` loops
+## Modeling the relationship between two quantitative variables
 
-The purpose of this section is to give you some more practice working with for loops and sequences, which are useful tools for efficiently repeating a process many times. Here is an example for loop that calculates $\sqrt{x}$ for a sequence of numbers $x = 0, 0.1, 0.2, ..., 0.9, 1$:
+In this activity, you will practice using and interpreting a fitted regression line. We will work with data on 116 sparrows, which were observed on Kent Island, New Brunswick. For each sparrow, we have information including:
 
-```r
-x <- seq(from=0, to=1, by=0.1)
-sqrt_x <- rep(0, length(x))
-for(i in 1:length(x)){
-  sqrt_x[i] <- sqrt(x[i])
-}
-sqrt_x
+* *Weight*: the weight of the sparrow (in grams)
+* *WingLength*: the sparrow's wing length (in mm)
+
+This data is included in the `Stat2Data` package. Below is a scatterplot showing the relationship between these two variables:
+
+```{r, echo=F, message=F, warning=F, fig.align='center', fig.width=5, fig.height=4}
+library(Stat2Data)
+library(tidyverse)
+data("Sparrows")
+
+Sparrows %>%
+  ggplot(aes(x = Weight,
+             y = WingLength)) +
+  geom_point(size=1.5) +
+  labs(x = "Weight (g)",
+       y = "Wing length (mm)",
+       title = "Wing length vs. weight for Kent Island sparrows") +
+  theme_bw() +
+  theme(text = element_text(size=12))
 ```
 
-Below are some short practice questions to help you get more comfortable creating `for` loops.
+One way to model the relationship between these two variables is with a *linear regression* model:
+
+$$\text{WingLength}_i = \beta_0 + \beta_1 \text{Weight}_i + \varepsilon_i$$
+
+where $\text{WingLength}_i$ represents the wing length for the $i$th sparrow, $\text{Weight}_i$ is the weight of the $i$th sparrow, and $\varepsilon_i$ is a noise term that captures individual variability around the regression line in the population. Typically $\varepsilon_i$ is assumed to be independent and mean 0 (other assumptions like constant variance and normality are also often made). This implies that
+
+$$\mathbb{E}[\text{WingLength}_i | \text{Weight}_i] = \beta_0 + \beta_1 \text{Weight}_i,$$
+
+or in other words that the relationship between weight and average wing length is linear, and the observed wing length is the expected wing length plus noise ($\varepsilon_i$).
+
+## Fitting linear regression models
+
+Of course, the true slope $\beta_1$ and the true intercept $\beta_0$ of the population model are unknown. Instead, we have to find estimates $\widehat{\beta}_1$ and $\widehat{\beta}_0$ using the observed data. Generally, linear regression models are fit using the method of *least squares*. That is, the estimates $\widehat{\beta}_0$ and $\widehat{\beta}_1$ are the values of $\beta_0$ and $\beta_1$ which minimize the sum of squared errors (SSE), also called residual sum of squares (RSS):
+
+$$SSE = \sum \limits_{i=1}^{116} (\text{WingLength}_i - \beta_0 - \beta_1 \text{Weight}_i)^2.$$
+
+## Questions
 
 :::{.question}
 #### Question 1
 
-Modify the loop above so that instead of calculating $\sqrt{x}$, we calculate $x^{1/3}$.
+Based on the plot, is linear regression an appropriate choice for modeling the relationship between weight and wing length?
 :::
+
+Now let's explore fitting the regression line by minimizing SSE. The code in the chunk below lets you specify an intercept and slope for the regression line. It then plots a line with the specified intercept and slope, and reports the sum of squared residuals (SSE). 
+
+```r
+# add values here!
+est_intercept = ...
+est_slope = ...
+
+# plot
+Sparrows |>
+  ggplot(aes(x = Weight, y = WingLength)) +
+  geom_point() +
+  geom_abline(intercept = est_intercept,
+              slope = est_slope,
+              color = "blue",
+              lwd = 1.5) +
+  theme_bw()
+
+# calculate sum of squared residuals
+Sparrows |>
+  mutate(prediction = est_intercept + est_slope*Weight,
+         residual = WingLength - prediction) |>
+  summarize(sum_sq_resid = sum(residual^2))
+```
 
 :::{.question}
 #### Question 2
 
-Modify the loop from Question 1 so that instead of considering $x = 0, 0.1, 0.2, ..., 0.9, 1$ (i.e. the numbers between 0 and 1, in increments of 0.1), we consider $x = 0, 0.05, 0.10, 0.15, ..., 1.95, 2$ (the numbers between 0 and 2, in increments of 0.05).
+Experiment with changing the intercept and slope, and observe how the plot and SSE change. Which values give the smallest SSE?
 :::
 
-**Note:** In Questions 1 and 2, you are applying a function to each element in a vector. Here you have used a `for` loop, because the purpose of these questions is to practice loops. However, `for` loops are not always the most efficient way to write code. Instead, many functions in R are *vectorized*: if you apply the function to a vector, it is applied to each element of the vector. For example,
+To calculate the true least squares estimates $\widehat{\beta}_0$ and $\widehat{\beta}_1$, we can use the `lm` function to fit a linear regression in R. Run the following code:
 
 ```r
-x <- seq(from=0, to=1, by=0.1)
-sqrt_x <- sqrt(x)
-sqrt_x
+lm(WingLength ~ Weight, data = Sparrows)
 ```
-
-produces the same output as the `for` loop above.
 
 :::{.question}
 #### Question 3
 
-Re-write the code for Question 1, using vectorization instead of the `for` loop.
+What are the estimated slope and intercept? How would you interpret those values?
 :::
 
 
-## More practice with `for` loops
-
-Suppose we want to simulate a single draw from a normal distribution with mean 0 and standard deviation 1. The code in R is
-
-```r
-rnorm(n=1, mean=0, sd=1)
-```
-
 :::{.question}
 #### Question 4
-Fill in the following `for` loop to create a sample of 1000 draws from a normal distribution and plot a histogram of the results:
 
-```r
-n <- ...
-normal_sample <- rep(NA, n)
-for(i in 1:n){
-  normal_sample[i] <- ...
-}
-hist(normal_sample)
-```
+What is the SSE when using the estimated slope and intercept from question 3? Confirm this SSE is smaller than for the different slopes and intercepts you tried in question 2.
 :::
 
 :::{.question}
 #### Question 5
-Look at the documentation for the `rnorm` function in R (you can get this with `?rnorm` in the console). Can you change the inputs to the `rnorm` function so that you take a sample of 1000 *without* using a loop?
+
+If a sparrow has a weight of 10g, what is its predicted wing length from the estimated regression line?
 :::
+
