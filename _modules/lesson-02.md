@@ -8,3 +8,6 @@ Module 2
   : [Activity 2](https://wfu-r-resources.github.io/activities/activity_1_2.html)
   : [Activity 3](https://wfu-r-resources.github.io/activities/activity_1_3.html)
   : [Activity 4](https://wfu-r-resources.github.io/activities/activity_1_4.html)
+  
+: Overview of EDA
+  : [EDA cheatsheet](https://wfu-r-resources.github.io/resources/eda_overview.html)
