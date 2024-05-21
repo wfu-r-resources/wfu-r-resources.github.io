@@ -1751,8 +1751,8 @@ changes. <em>Hint: google searches for things like “ggplot change
 opacity” often produce good results. We will also cover some of this
 material next week.</em></p>
 </div>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>flights <span class="sc">%&gt;%</span></span>
-<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>  <span class="fu">drop_na</span>(dep_delay, arr_delay, origin) <span class="sc">%&gt;%</span></span>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>flights <span class="sc">|&gt;</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>  <span class="fu">drop_na</span>(dep_delay, arr_delay, origin) <span class="sc">|&gt;</span></span>
 <span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> dep_delay, <span class="at">y =</span> arr_delay, </span>
 <span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>             <span class="at">color =</span> origin, <span class="at">shape=</span>origin)) <span class="sc">+</span></span>
 <span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
@@ -1776,7 +1776,7 @@ relationship.</p>
 <p>In R, we calculate correlation with the <em>cor</em> function. Fill
 in the code below to calculate the correlation between departure delay
 and arrival delay:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>flights <span class="sc">%&gt;%</span></span>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>flights <span class="sc">|&gt;</span></span>
 <span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">delay_cor =</span> <span class="fu">cor</span>(..., ..., <span class="at">use =</span> <span class="st">&quot;complete.obs&quot;</span>))</span></code></pre></div>
 </div>
 <div id="question-7" class="section level4 question">
@@ -1786,8 +1786,8 @@ on which airport the flight departs from? We can use the
 <code>group_by</code> function to group the data before calculating
 correlation. Fill in the code below to calculate the correlation for
 each airport (EWR, JFK, and LGA).</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>flights <span class="sc">%&gt;%</span></span>
-<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>  <span class="fu">group_by</span>(...) <span class="sc">%&gt;%</span></span>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>flights <span class="sc">|&gt;</span></span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>  <span class="fu">group_by</span>(...) <span class="sc">|&gt;</span></span>
 <span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">delay_cor =</span> <span class="fu">cor</span>(..., ..., <span class="at">use =</span> <span class="st">&quot;complete.obs&quot;</span>))</span></code></pre></div>
 </div>
 <div id="question-8" class="section level4 question">
@@ -1797,8 +1797,8 @@ pilots can make up for lost time during the flight. Let’s create a new
 variable measuring the amount of time made up during each flight, and
 visualize its distribution with a histogram. Fill in the following
 code:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>flights <span class="sc">%&gt;%</span></span>
-<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">time_gained =</span> ...) <span class="sc">%&gt;%</span></span>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>flights <span class="sc">|&gt;</span></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">time_gained =</span> ...) <span class="sc">|&gt;</span></span>
 <span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> ...)) <span class="sc">+</span></span>
 <span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>  <span class="fu">geom_histogram</span>() <span class="sc">+</span></span>
 <span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;...&quot;</span>,</span>
@@ -1810,9 +1810,9 @@ code:</p>
 <p>How does the amount of time gained vary across airlines? Fill in the
 following code to calculate the average time gained and the standard
 deviation of time gained for each airline.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>flights <span class="sc">%&gt;%</span></span>
-<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">time_gained =</span> ...) <span class="sc">%&gt;%</span></span>
-<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>  <span class="fu">group_by</span>(...) <span class="sc">%&gt;%</span></span>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>flights <span class="sc">|&gt;</span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">time_gained =</span> ...) <span class="sc">|&gt;</span></span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>  <span class="fu">group_by</span>(...) <span class="sc">|&gt;</span></span>
 <span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">avg_time_gained =</span> ...,</span>
 <span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>            <span class="at">sd_time_gained =</span> ...)</span></code></pre></div>
 </div>
@@ -1834,16 +1834,16 @@ the <code>group_by</code>, <code>summarize</code>, and
 <p>Now let’s look more at the different airlines. Which airport is the
 most common departure airport for American Airlines (AA) flights? Fill
 in the following code.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>flights <span class="sc">%&gt;%</span></span>
-<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>  <span class="fu">filter</span>(... <span class="sc">==</span> <span class="st">&quot;AA&quot;</span>) <span class="sc">%&gt;%</span></span>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>flights <span class="sc">|&gt;</span></span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>  <span class="fu">filter</span>(... <span class="sc">==</span> <span class="st">&quot;AA&quot;</span>) <span class="sc">|&gt;</span></span>
 <span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>  <span class="fu">count</span>(...)</span></code></pre></div>
 </div>
 <div id="question-12" class="section level4 question">
 <h4>Question 12</h4>
 <p>Occasionally, flights actually depart early. How many American
 Airlines flights departed early?</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>flights <span class="sc">%&gt;%</span></span>
-<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>  <span class="fu">filter</span>(carrier ..., dep_delay ...) <span class="sc">%&gt;%</span></span>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>flights <span class="sc">|&gt;</span></span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>  <span class="fu">filter</span>(carrier ..., dep_delay ...) <span class="sc">|&gt;</span></span>
 <span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>  <span class="fu">count</span>()</span></code></pre></div>
 </div>
 </div>

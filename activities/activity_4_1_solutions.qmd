@@ -1,0 +1,60 @@
+---
+title: "Activity 1 solutions"
+format: 
+  html:
+    embed-resources: true
+editor: source
+author: "Ciaran Evans"
+---
+
+1.
+
+```{r}
+x <- seq(from=0, to=1, by=0.1)
+cube_root_x <- rep(0, length(x))
+for(i in 1:length(x)){
+  cube_root_x[i] <- x[i]^(1/3)
+}
+cube_root_x
+```
+
+**Note:** the exponent needs to be in parentheses! E.g. `5^1/3` is not the same as `5^(1/3)`
+
+2.
+
+```{r}
+x <- seq(from=0, to=2, by=0.05)
+cube_root_x <- rep(0, length(x))
+for(i in 1:length(x)){
+  cube_root_x[i] <- x[i]^(1/3)
+}
+cube_root_x
+```
+
+3.
+
+```{r}
+x <- seq(from=0, to=1, by=0.1)
+cube_root_x <- x^(1/3)
+cube_root_x
+```
+
+4.
+
+```{r}
+n <- 1000
+normal_sample <- rep(NA, n)
+for(i in 1:n){
+  normal_sample[i] <- rnorm(n=1, mean=0, sd=1)
+}
+hist(normal_sample)
+```
+
+5.
+
+```{r}
+normal_sample <- rnorm(1000)
+hist(normal_sample)
+```
+
+

@@ -1,0 +1,92 @@
+---
+title: "Activity 2 solutions"
+format: 
+  html:
+    embed-resources: true
+editor: source
+author: "Ciaran Evans"
+---
+
+```{r include=F}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(message = F)
+knitr::opts_chunk$set(warning = F)
+knitr::opts_chunk$set(error = T)
+```
+
+1.
+
+```{r}
+library(tidyverse)
+library(Stat2Data)
+data("CountyHealth")
+health_lm <- lm(MDs ~ Hospitals, data = CountyHealth)
+```
+
+2.
+
+```{r}
+CountyHealth |>
+  mutate(yhat = predict(health_lm),
+         residuals = residuals(health_lm)) |>
+  ggplot(aes(x = yhat, y = residuals)) +
+  geom_point() +
+  geom_abline(slope = 0, intercept = 0, 
+              color = "blue", lwd = 1.2) +
+  labs(x = "Predicted number of doctors",
+       y = "Residual") +
+  theme_bw()
+```
+
+3.
+
+```{r}
+CountyHealth |>
+  mutate(residuals = residuals(health_lm)) |>
+  ggplot(aes(sample = residuals)) +
+  geom_qq() +
+  geom_qq_line() +
+  labs(x = "Theoretical normal quantiles",
+       y = "Observed residual quantiles") +
+  theme_classic()
+```
+
+4. None of these assumptions appear to be satisfied. Looking at the residual plot, the constant variance assumption is clearly violated, as the spread of the points increases with the predicted number of doctors. Also, we can see a bit of a U-shape to the residuals, which suggests a non-linear relationship. The QQ-plot shows that the residuals are decidedly non-normal, with much heavier tails than would be expected of a normal distribution. This is likely related to the non-constant variance issue.
+
+5.
+
+```{r}
+health_lm2 <- lm(sqrt(MDs) ~ Hospitals, data = CountyHealth)
+```
+
+6.
+
+```{r}
+CountyHealth |>
+  mutate(yhat = predict(health_lm2),
+         residuals = residuals(health_lm2)) |>
+  ggplot(aes(x = yhat, y = residuals)) +
+  geom_point() +
+  geom_abline(slope = 0, intercept = 0, 
+              color = "blue", lwd = 1.2) +
+  labs(x = "Predicted sqrt(number of doctors)",
+       y = "Residual") +
+  theme_bw()
+```
+
+
+```{r}
+CountyHealth |>
+  mutate(residuals = residuals(health_lm2)) |>
+  ggplot(aes(sample = residuals)) +
+  geom_qq() +
+  geom_qq_line() +
+  labs(x = "Theoretical normal quantiles",
+       y = "Observed residual quantiles") +
+  theme_classic()
+```
+
+The assumptions all appear satisfied for the new model with the transformed response!
+
+
+

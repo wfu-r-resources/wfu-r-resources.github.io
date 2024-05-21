@@ -1,0 +1,57 @@
+---
+title: "Activity 4 solutions"
+format: 
+  html:
+    embed-resources: true
+editor: source
+author: "Ciaran Evans"
+---
+
+```{r include=F}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(message = F)
+knitr::opts_chunk$set(warning = F)
+library(tidyverse)
+library(palmerpenguins)
+```
+
+
+1.
+
+```{r}
+set.seed(4)
+
+sub_data <- penguins |>
+  slice_sample(n=10) |>
+  select(species, island, bill_length_mm, bill_depth_mm)
+
+sub_data |>
+  count(species, island)
+```
+
+2.
+
+```{r}
+sub_data |>
+  group_by(island, species) |>
+  summarize(mean_length = mean(bill_length_mm, na.rm=T))
+```
+
+3.
+
+```{r}
+sub_data |>
+  mutate(bill_ratio = bill_length_mm/bill_depth_mm)
+```
+
+4.
+
+```{r}
+sub_data |>
+  filter(species == "Adelie", 
+         island == "Torgersen")
+```
+
+
+
+

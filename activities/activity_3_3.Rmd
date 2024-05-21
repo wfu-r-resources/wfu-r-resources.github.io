@@ -53,12 +53,12 @@ Fit a linear regression model with log(GDP per capita) as the predictor, and lif
 :::{.question}
 #### Question 5
 
-Using your fitted model from question 4, what is the predicted life expectancy for a country with a GDP per capita of $20000?
+Create a residual plot and a QQ plot for the fitted model in question 4. Do the regression assumptions look more reasonable after the log transformation?
 :::
 
 :::{.question}
 #### Question 6
 
-Create a residual plot and a QQ plot for the fitted model in question 4. Do the regression assumptions look more reasonable after the log transformation?
+Using your fitted model from question 4, what is the predicted life expectancy for a country with a GDP per capita of $20000?
 :::
 

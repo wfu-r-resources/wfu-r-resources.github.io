@@ -1609,112 +1609,111 @@ questions</h1>
 <!-- Don't indent these lines or it will mess pre blocks indentation --> 
 <div id="practice-writing-code" class="section level2">
 <h2>Practice writing code</h2>
-<p>In each of the questions below, write code (in R or Python) to
-produce the output from the original data.</p>
+<p>In each of the questions below, write code to produce the output from
+the original data.</p>
 <ol style="list-style-type: decimal">
 <li>Original data:</li>
 </ol>
 <pre><code>## # A tibble: 10 × 4
 ##    species   island    bill_length_mm bill_depth_mm
 ##    &lt;fct&gt;     &lt;fct&gt;              &lt;dbl&gt;         &lt;dbl&gt;
-##  1 Adelie    Biscoe              37.9          18.6
-##  2 Gentoo    Biscoe              NA            NA  
-##  3 Adelie    Torgersen           39.7          18.4
-##  4 Gentoo    Biscoe              48.2          14.3
-##  5 Gentoo    Biscoe              46.2          14.1
-##  6 Gentoo    Biscoe              49.2          15.2
-##  7 Chinstrap Dream               51.5          18.7
-##  8 Adelie    Torgersen           41.1          17.6
-##  9 Adelie    Torgersen           37.7          19.8
-## 10 Adelie    Dream               40.9          18.9</code></pre>
+##  1 Adelie    Torgersen           35.5          17.5
+##  2 Chinstrap Dream               40.9          16.6
+##  3 Gentoo    Biscoe              41.7          14.7
+##  4 Adelie    Torgersen           33.5          19  
+##  5 Gentoo    Biscoe              48.7          15.1
+##  6 Gentoo    Biscoe              45.5          14.5
+##  7 Gentoo    Biscoe              59.6          17  
+##  8 Chinstrap Dream               50.8          19  
+##  9 Chinstrap Dream               47.5          16.8
+## 10 Adelie    Biscoe              41.3          21.1</code></pre>
 <p>Output:</p>
-<pre><code>## # A tibble: 5 × 3
+<pre><code>## # A tibble: 4 × 3
 ##   species   island        n
 ##   &lt;fct&gt;     &lt;fct&gt;     &lt;int&gt;
 ## 1 Adelie    Biscoe        1
-## 2 Adelie    Dream         1
-## 3 Adelie    Torgersen     3
-## 4 Chinstrap Dream         1
-## 5 Gentoo    Biscoe        4</code></pre>
+## 2 Adelie    Torgersen     2
+## 3 Chinstrap Dream         3
+## 4 Gentoo    Biscoe        4</code></pre>
 <ol start="2" style="list-style-type: decimal">
 <li>Original data:</li>
 </ol>
 <pre><code>## # A tibble: 10 × 4
 ##    species   island    bill_length_mm bill_depth_mm
 ##    &lt;fct&gt;     &lt;fct&gt;              &lt;dbl&gt;         &lt;dbl&gt;
-##  1 Adelie    Biscoe              37.9          18.6
-##  2 Gentoo    Biscoe              NA            NA  
-##  3 Adelie    Torgersen           39.7          18.4
-##  4 Gentoo    Biscoe              48.2          14.3
-##  5 Gentoo    Biscoe              46.2          14.1
-##  6 Gentoo    Biscoe              49.2          15.2
-##  7 Chinstrap Dream               51.5          18.7
-##  8 Adelie    Torgersen           41.1          17.6
-##  9 Adelie    Torgersen           37.7          19.8
-## 10 Adelie    Dream               40.9          18.9</code></pre>
+##  1 Adelie    Torgersen           35.5          17.5
+##  2 Chinstrap Dream               40.9          16.6
+##  3 Gentoo    Biscoe              41.7          14.7
+##  4 Adelie    Torgersen           33.5          19  
+##  5 Gentoo    Biscoe              48.7          15.1
+##  6 Gentoo    Biscoe              45.5          14.5
+##  7 Gentoo    Biscoe              59.6          17  
+##  8 Chinstrap Dream               50.8          19  
+##  9 Chinstrap Dream               47.5          16.8
+## 10 Adelie    Biscoe              41.3          21.1</code></pre>
 <p>Output:</p>
 <pre><code>## `summarise()` has grouped output by &#39;island&#39;. You can override using the
 ## `.groups` argument.</code></pre>
-<pre><code>## # A tibble: 5 × 3
+<pre><code>## # A tibble: 4 × 3
 ## # Groups:   island [3]
 ##   island    species   mean_length
 ##   &lt;fct&gt;     &lt;fct&gt;           &lt;dbl&gt;
-## 1 Biscoe    Adelie           37.9
-## 2 Biscoe    Gentoo           47.9
-## 3 Dream     Adelie           40.9
-## 4 Dream     Chinstrap        51.5
-## 5 Torgersen Adelie           39.5</code></pre>
+## 1 Biscoe    Adelie           41.3
+## 2 Biscoe    Gentoo           48.9
+## 3 Dream     Chinstrap        46.4
+## 4 Torgersen Adelie           34.5</code></pre>
 <ol start="3" style="list-style-type: decimal">
 <li>Original data:</li>
 </ol>
 <pre><code>## # A tibble: 10 × 4
 ##    species   island    bill_length_mm bill_depth_mm
 ##    &lt;fct&gt;     &lt;fct&gt;              &lt;dbl&gt;         &lt;dbl&gt;
-##  1 Adelie    Biscoe              37.9          18.6
-##  2 Gentoo    Biscoe              NA            NA  
-##  3 Adelie    Torgersen           39.7          18.4
-##  4 Gentoo    Biscoe              48.2          14.3
-##  5 Gentoo    Biscoe              46.2          14.1
-##  6 Gentoo    Biscoe              49.2          15.2
-##  7 Chinstrap Dream               51.5          18.7
-##  8 Adelie    Torgersen           41.1          17.6
-##  9 Adelie    Torgersen           37.7          19.8
-## 10 Adelie    Dream               40.9          18.9</code></pre>
+##  1 Adelie    Torgersen           35.5          17.5
+##  2 Chinstrap Dream               40.9          16.6
+##  3 Gentoo    Biscoe              41.7          14.7
+##  4 Adelie    Torgersen           33.5          19  
+##  5 Gentoo    Biscoe              48.7          15.1
+##  6 Gentoo    Biscoe              45.5          14.5
+##  7 Gentoo    Biscoe              59.6          17  
+##  8 Chinstrap Dream               50.8          19  
+##  9 Chinstrap Dream               47.5          16.8
+## 10 Adelie    Biscoe              41.3          21.1</code></pre>
 <p>Output:</p>
 <pre><code>## # A tibble: 10 × 5
 ##    species   island    bill_length_mm bill_depth_mm bill_ratio
 ##    &lt;fct&gt;     &lt;fct&gt;              &lt;dbl&gt;         &lt;dbl&gt;      &lt;dbl&gt;
-##  1 Adelie    Biscoe              37.9          18.6       2.04
-##  2 Gentoo    Biscoe              NA            NA        NA   
-##  3 Adelie    Torgersen           39.7          18.4       2.16
-##  4 Gentoo    Biscoe              48.2          14.3       3.37
-##  5 Gentoo    Biscoe              46.2          14.1       3.28
-##  6 Gentoo    Biscoe              49.2          15.2       3.24
-##  7 Chinstrap Dream               51.5          18.7       2.75
-##  8 Adelie    Torgersen           41.1          17.6       2.34
-##  9 Adelie    Torgersen           37.7          19.8       1.90
-## 10 Adelie    Dream               40.9          18.9       2.16</code></pre>
+##  1 Adelie    Torgersen           35.5          17.5       2.03
+##  2 Chinstrap Dream               40.9          16.6       2.46
+##  3 Gentoo    Biscoe              41.7          14.7       2.84
+##  4 Adelie    Torgersen           33.5          19         1.76
+##  5 Gentoo    Biscoe              48.7          15.1       3.23
+##  6 Gentoo    Biscoe              45.5          14.5       3.14
+##  7 Gentoo    Biscoe              59.6          17         3.51
+##  8 Chinstrap Dream               50.8          19         2.67
+##  9 Chinstrap Dream               47.5          16.8       2.83
+## 10 Adelie    Biscoe              41.3          21.1       1.96</code></pre>
 <ol start="4" style="list-style-type: decimal">
 <li>Original data:</li>
 </ol>
 <pre><code>## # A tibble: 10 × 4
 ##    species   island    bill_length_mm bill_depth_mm
 ##    &lt;fct&gt;     &lt;fct&gt;              &lt;dbl&gt;         &lt;dbl&gt;
-##  1 Adelie    Biscoe              37.9          18.6
-##  2 Gentoo    Biscoe              NA            NA  
-##  3 Adelie    Torgersen           39.7          18.4
-##  4 Gentoo    Biscoe              48.2          14.3
-##  5 Gentoo    Biscoe              46.2          14.1
-##  6 Gentoo    Biscoe              49.2          15.2
-##  7 Chinstrap Dream               51.5          18.7
-##  8 Adelie    Torgersen           41.1          17.6
-##  9 Adelie    Torgersen           37.7          19.8
-## 10 Adelie    Dream               40.9          18.9</code></pre>
+##  1 Adelie    Torgersen           35.5          17.5
+##  2 Chinstrap Dream               40.9          16.6
+##  3 Gentoo    Biscoe              41.7          14.7
+##  4 Adelie    Torgersen           33.5          19  
+##  5 Gentoo    Biscoe              48.7          15.1
+##  6 Gentoo    Biscoe              45.5          14.5
+##  7 Gentoo    Biscoe              59.6          17  
+##  8 Chinstrap Dream               50.8          19  
+##  9 Chinstrap Dream               47.5          16.8
+## 10 Adelie    Biscoe              41.3          21.1</code></pre>
 <p>Output:</p>
-<pre><code>## # A tibble: 1 × 4
-##   species island bill_length_mm bill_depth_mm
-##   &lt;fct&gt;   &lt;fct&gt;           &lt;dbl&gt;         &lt;dbl&gt;
-## 1 Adelie  Dream            40.9          18.9</code></pre>
+<pre><code>## # A tibble: 2 × 4
+##   species island    bill_length_mm bill_depth_mm
+##   &lt;fct&gt;   &lt;fct&gt;              &lt;dbl&gt;         &lt;dbl&gt;
+## 1 Adelie  Torgersen           35.5          17.5
+## 2 Adelie  Torgersen           33.5          19</code></pre>
 </div>
 
    

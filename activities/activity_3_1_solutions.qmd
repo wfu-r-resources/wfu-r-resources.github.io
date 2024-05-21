@@ -1,0 +1,77 @@
+---
+title: "Activity 1 solutions"
+format: 
+  html:
+    embed-resources: true
+editor: source
+author: "Ciaran Evans"
+---
+
+```{r include=F}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(message = F)
+knitr::opts_chunk$set(warning = F)
+knitr::opts_chunk$set(error = T)
+library(Stat2Data)
+library(tidyverse)
+data("Sparrows")
+```
+
+2.
+
+```{r}
+# add values here!
+est_intercept = 7.5
+est_slope = 1.4
+
+# plot
+Sparrows |>
+  ggplot(aes(x = Weight, y = WingLength)) +
+  geom_point() +
+  geom_abline(intercept = est_intercept,
+              slope = est_slope,
+              color = "blue",
+              lwd = 1.5) +
+  theme_bw()
+
+# calculate sum of squared residuals
+Sparrows |>
+  mutate(prediction = est_intercept + est_slope*Weight,
+         residual = WingLength - prediction) |>
+  summarize(sum_sq_resid = sum(residual^2))
+```
+
+3.
+
+```{r}
+lm(WingLength ~ Weight, data = Sparrows)
+```
+
+For a sparrow with weight 0g (this is, of course, a value well outside the range of weights actually observed in the data) we would predict a wing length of 8.755m. An increase in 1g in weight is associated with an increase of 1.313mm in wing length, on average.
+
+4.
+
+```{r}
+# add values here!
+est_intercept = 8.755
+est_slope = 1.313
+
+# plot
+Sparrows |>
+  ggplot(aes(x = Weight, y = WingLength)) +
+  geom_point() +
+  geom_abline(intercept = est_intercept,
+              slope = est_slope,
+              color = "blue",
+              lwd = 1.5) +
+  theme_bw()
+
+# calculate sum of squared residuals
+Sparrows |>
+  mutate(prediction = est_intercept + est_slope*Weight,
+         residual = WingLength - prediction) |>
+  summarize(sum_sq_resid = sum(residual^2))
+```
+
+
+5. The estimated wing length is $8.755 + 1.313(10) = 21.885$

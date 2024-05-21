@@ -1,0 +1,31 @@
+---
+---
+---
+title: "Activity 1"
+author: "Your Name"
+date: "Today"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(palmerpenguins)
+library(tidyverse)
+```
+
+### Exercise 1
+
+```{r}
+
+```
+
+Type your answer to question 1 here...
+
+### Exercise 2
+
+```{r}
+
+```
+
+Type your answer to question 2 here...
+

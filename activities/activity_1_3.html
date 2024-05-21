@@ -1685,67 +1685,41 @@ install the <code>gapminder</code> package before beginning the
 activity.</p>
 <div id="question-1" class="section level4 question">
 <h4>Question 1</h4>
-<p>Fill in the following code to create a new data frame, containing
-only countries in 2007 with life expectancy at least 70 years and GDP
-per capita at most $20000.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>new_gapminder <span class="ot">&lt;-</span> gapminder <span class="sc">|&gt;</span></span>
-<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>  <span class="fu">filter</span>(year ..., </span>
-<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>         lifeExp ..., </span>
-<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>         gdpPercap ...)</span></code></pre></div>
+<p>Create a new data frame, containing only countries in 2007 with life
+expectancy at least 70 years and GDP per capita at most $20000.</p>
 </div>
 <div id="question-2" class="section level4 question">
 <h4>Question 2</h4>
-<p>Fill in the following code to count the number of countries in each
-continent in the data for 2007.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>gapminder <span class="sc">|&gt;</span></span>
-<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>  <span class="fu">filter</span>(...) <span class="sc">|&gt;</span></span>
-<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>  <span class="fu">count</span>(...)</span></code></pre></div>
+<p>Count the number of countries in each continent in the data for
+2007.</p>
 </div>
 <div id="question-3" class="section level4 question">
 <h4>Question 3</h4>
-<p>Fill in the following code to create a data frame with a new column
-that is the natural log of GDP per capita. (Hint: in R, the natural log
-function is <code>log</code>).</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>new_gapminder <span class="ot">&lt;-</span> gapminder <span class="sc">|&gt;</span></span>
-<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">log_gdp_percap =</span> ...)</span></code></pre></div>
+<p>Calculate the median natural log of GDP per capita in countries with
+a life expectancy of at least 70 years in 2007.</p>
 </div>
 <div id="question-4" class="section level4 question">
 <h4>Question 4</h4>
-<p>Fill in the following code to calculate the median natural log of GDP
-per capita in countries with a life expectancy of at least 70 years in
-2007. (Hint: in R, the median function is <code>median</code>).</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>gapminder <span class="sc">|&gt;</span></span>
-<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">log_gdp_percap =</span> ...) <span class="sc">|&gt;</span></span>
-<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>  <span class="fu">filter</span>(...) <span class="sc">|&gt;</span></span>
-<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>  <span class="fu">summarize</span>(...)</span></code></pre></div>
+<p>Calculate the median natural log of GDP per capita in countries with
+a life expectancy of at least 70 years in 2007, broken down by
+continent.</p>
 </div>
 <div id="question-5" class="section level4 question">
 <h4>Question 5</h4>
-<p>Fill in the following code to calculate the median natural log of GDP
-per capita in countries with a life expectancy of at least 70 years in
-2007, broken down by continent.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>gapminder <span class="sc">|&gt;</span></span>
-<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>  <span class="fu">mutate</span>(...) <span class="sc">|&gt;</span></span>
-<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>  <span class="fu">filter</span>(...) <span class="sc">|&gt;</span></span>
-<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>  <span class="fu">group_by</span>(...) <span class="sc">|&gt;</span></span>
-<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>  <span class="fu">summarize</span>(...)</span></code></pre></div>
+<p>Does it matter whether we <code>mutate</code> or <code>filter</code>
+first in question 4?</p>
 </div>
 <div id="question-6" class="section level4 question">
 <h4>Question 6</h4>
-<p>Does it matter whether we <code>mutate</code> or <code>filter</code>
-first in question 5?</p>
-</div>
-<div id="question-7" class="section level4 question">
-<h4>Question 7</h4>
 <p>Calculate the median life expectancy for each continent in 2007, and
 the correlation between log GDP per capita and life expectancy for each
 continent in 2007.</p>
 </div>
-<div id="question-8" class="section level4 question">
-<h4>Question 8</h4>
-<p>Using your summary statistics, describe the relationship between GDP
-per capita and life expectancy, and summarize the differences between
-continents.</p>
+<div id="question-7" class="section level4 question">
+<h4>Question 7</h4>
+<p>Using your summary statistics, describe the relationship between log
+GDP per capita and life expectancy, and summarize the differences
+between continents.</p>
 </div>
 </div>
 <div id="data-wrangling-with-health-violations" class="section level1">
@@ -1753,8 +1727,8 @@ continents.</p>
 <p>The <code>Violations</code> data from the <code>mdsr</code> package
 contains information on 480621 health inspections conducted on
 restaurants in New York City.</p>
-<div id="question-9" class="section level4 question">
-<h4>Question 9</h4>
+<div id="question-8" class="section level4 question">
+<h4>Question 8</h4>
 <p>Use the <code>Violations</code> data to create a new data frame
 called <code>violations_summary</code>, which contains the median
 inspection score by zip code for zip codes in Manhattan with 50 or more
@@ -1763,12 +1737,12 @@ inspections.</p>
 observations for zip code, borough, or inspection score. The
 <code>drop_na</code> function can be useful here. Below is some starter
 code, you will need to complete the rest:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>violations_summary <span class="ot">&lt;-</span> Violations <span class="sc">|&gt;</span></span>
-<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>  <span class="fu">drop_na</span>(zipcode, score, boro) <span class="sc">|&gt;</span></span>
-<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>  ...</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>violations_summary <span class="ot">&lt;-</span> Violations <span class="sc">|&gt;</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>  <span class="fu">drop_na</span>(zipcode, score, boro) <span class="sc">|&gt;</span></span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>  ...</span></code></pre></div>
 </div>
-<div id="question-10" class="section level4 question">
-<h4>Question 10</h4>
+<div id="question-9" class="section level4 question">
+<h4>Question 9</h4>
 <p>Plot the number of median score vs. the number of inspections, using
 the <code>violations_summary</code> data you created in the previous
 question.</p>

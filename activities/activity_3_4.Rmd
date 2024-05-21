@@ -29,7 +29,7 @@ Write down the population regression model, with weight as the response, and win
 Use the following code to fit the model in R. Note that we can include multiple predictors by "adding" them together in the regression formula (we don't really add them mathematically; the `+` just means "put another predictor in the model").
 
 ```{r eval=F}
-sparrow_lm <- lm(Weight ~ Treatment + WingLength, data = Sparrows)
+sparrow_lm <- lm(Weight ~ WingLength + Treatment, data = Sparrows)
 summary(sparrow_lm)
 ```
 :::

@@ -9,7 +9,7 @@ link-citations: yes
 
 # Data
 
-For this class activity, we will create our own small toy dataset, so that we can explore data wrangling functions with a dataset that is easy to view and work with.
+For this activity, we will create our own small toy dataset, so that we can explore data wrangling functions with a dataset that is easy to view and work with.
 
 Run the following code in R to create the toy dataset:
 

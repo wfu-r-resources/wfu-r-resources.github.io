@@ -1,0 +1,111 @@
+---
+title: "Activity 3 solutions"
+format: 
+  html:
+    embed-resources: true
+editor: source
+author: "Ciaran Evans"
+---
+
+```{r include=F}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(message = F)
+knitr::opts_chunk$set(warning = F)
+knitr::opts_chunk$set(error = T)
+```
+
+1. No -- we have multiple years for each country in the data. I would expect observations for the same country in different years to be strongly correlated.
+
+2.
+
+```{r}
+library(tidyverse)
+library(gapminder)
+
+gapminder_2007 <- gapminder |>
+  filter(year == 2007)
+```
+
+3.
+
+```{r}
+m1 <- lm(lifeExp ~ gdpPercap, data = gapminder_2007)
+```
+
+
+```{r}
+gapminder_2007 |>
+  mutate(yhat = predict(m1),
+         residuals = residuals(m1)) |>
+  ggplot(aes(x = yhat, y = residuals)) +
+  geom_point() +
+  geom_abline(slope = 0, intercept = 0, 
+              color = "blue", lwd = 1.2) +
+  labs(x = "Predicted life expectancy",
+       y = "Residual") +
+  theme_bw()
+```
+
+```{r}
+gapminder_2007 |>
+  mutate(residuals = residuals(m1)) |>
+  ggplot(aes(sample = residuals)) +
+  geom_qq() +
+  geom_qq_line() +
+  labs(x = "Theoretical normal quantiles",
+       y = "Observed residual quantiles") +
+  theme_classic()
+```
+
+The assumption of a linear relationship between GDP per capita and life expectancy definitely does *not* seem reasonable. We will need to address that violation, then we can re-assess the other assumptions.
+
+4.
+
+```{r}
+m2 <- lm(lifeExp ~ log(gdpPercap), data = gapminder_2007)
+```
+
+
+5.
+
+```{r}
+gapminder_2007 |>
+  mutate(yhat = predict(m2),
+         residuals = residuals(m2)) |>
+  ggplot(aes(x = yhat, y = residuals)) +
+  geom_point() +
+  geom_abline(slope = 0, intercept = 0, 
+              color = "blue", lwd = 1.2) +
+  labs(x = "Predicted life expectancy",
+       y = "Residual") +
+  theme_bw()
+```
+
+```{r}
+gapminder_2007 |>
+  mutate(residuals = residuals(m2)) |>
+  ggplot(aes(sample = residuals)) +
+  geom_qq() +
+  geom_qq_line() +
+  labs(x = "Theoretical normal quantiles",
+       y = "Observed residual quantiles") +
+  theme_classic()
+```
+
+While the diagnostics are not perfect, the shape assumption looks much better than it did before.
+
+6. 
+
+```{r}
+coef(m2)
+
+coef(m2)[1] + coef(m2)[2]*log(20000)
+```
+The estimated life expectancy is 76.28 years.
+
+
+
+
+
+
+

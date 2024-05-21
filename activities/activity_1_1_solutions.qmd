@@ -1,0 +1,172 @@
+---
+title: "Activity 1 solutions"
+format: 
+  html:
+    embed-resources: true
+editor: source
+author: "Ciaran Evans"
+---
+
+```{r include=F}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(message = F)
+knitr::opts_chunk$set(warning = F)
+```
+
+
+2. There are 344 rows and 8 variables. Each row represents a penguin, with variables describing attributes like species, bill length, bill depth, etc.
+
+3.
+
+```{r, message=F, warning=F}
+library(palmerpenguins)
+library(tidyverse)
+glimpse(penguins)
+```
+
+`glimpse` provides information on the number of rows and columns, the column names, and shows a few values for each column. Here the columns are `species`, `island`, etc. (note that they are being displayed horizontally; to view the dataset itself, use `View(penguins)` in the console)
+
+4.
+
+```{r}
+penguins |>
+  ggplot(aes(x = bill_length_mm)) +
+  geom_histogram()
+```
+
+The distribution of bill length appears to be multimodal, with peaks around 40mm, 50mm, and perhaps 47mm. The distribution ranges from about 30 to about 60, with most observations between 35 and 55mm.
+
+5.
+
+```{r}
+penguins |>
+  ggplot(aes(x = bill_length_mm, y = bill_depth_mm)) +
+  geom_point()
+```
+
+It is hard to see much relationship between bill length and bill depth here. From the scatterplot, it does seem like there might be different groups within the data, possibly corresponding to different species?
+
+6.
+
+```{r}
+penguins |>
+  ggplot(aes(x = bill_length_mm, 
+  y = bill_depth_mm, 
+  color = species,
+  shape = species)) +
+  geom_point()
+```
+
+Indeed, the points do appear to cluster by species! Within each species, there appears to be a moderate positive relationship between bill length and bill depth.
+
+7. Gentoo
+
+8.
+
+```{r}
+penguins |>
+  count(species)
+```
+
+There are 152 Adelie penguins, 68 Chinstrap penguins, and 124 Gentoo penguins.
+
+9.
+
+```{r}
+penguins |>
+  count(island)
+```
+
+There are 168 penguins on Biscoe Island, 124 on Dream Island, and 52 on Torgersen island.
+
+10.
+
+```{r}
+penguins |>
+  ggplot(aes(x = body_mass_g)) +
+  geom_histogram(bins=20)
+```
+
+The distribution of body mass looks unimodal and right-skewed, with a peak around 4000g. Most penguins have a body mass between 3000 and 6000g. There do not appear to be any outliers in the data.
+
+(When we describe distributions in future, we will also calculate measures of center and spread, like the mean/median and standard deviation/IQR).
+
+11.
+
+```{r}
+penguins |>
+  summarize(mean(body_mass_g))
+```
+
+We get NA (which means "Not Available"), because the data contain missing observations.
+
+12.
+
+```{r}
+penguins |>
+  summarize(mean(body_mass_g, na.rm=TRUE))
+```
+
+13.
+
+```{r}
+penguins |>
+  summarize(num_mass_na = sum(is.na(body_mass_g)))
+```
+
+14.
+
+```{r}
+penguins |>
+  ggplot(aes(x = body_mass_g)) +
+  geom_histogram() +
+  facet_wrap(~species)
+```
+
+Each species has a unimodal, roughly symmetric distribution, with similar spreads. The distributions of body mass for Adelie and Chinstrap penguins appear to be centered around 3700g, while for Gentoo penguins body mass appears to be centered around 5000g.
+
+15.
+
+```{r}
+penguins |>
+  group_by(species) |>
+  summarize(mean(body_mass_g, na.rm=TRUE))
+```
+
+The mean body mass is 3706g for Adelie penguins, 3733g for Chinstrap penguins, and 5092g for Gentoo penguins.
+
+16.
+
+```{r}
+penguins |>
+  ggplot(aes(x = bill_length_mm, 
+             y = flipper_length_mm, 
+             color = island,
+             shape = island)) +
+  geom_point() +
+  facet_wrap(~sex) +
+  labs(x = "Bill length (mm)",
+       y = "Flipper length (mm)",
+       color = "Island",
+       shape = "Island") +
+  theme_bw()
+```
+
+17.
+
+```{r}
+penguins |>
+  ggplot(aes(x = flipper_length_mm, 
+             y = island)) +
+  geom_boxplot() +
+  labs(x = "Flipper length (mm)", 
+       y = "Island", 
+       title = "Distribution of flipper length by island") +
+  theme_classic()
+```
+
+
+
+
+
+

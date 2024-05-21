@@ -1,0 +1,60 @@
+---
+title: "Activity 1 solutions"
+format: 
+  html:
+    embed-resources: true
+editor: source
+author: "Ciaran Evans"
+---
+
+```{r include=F}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(message = F)
+knitr::opts_chunk$set(warning = F)
+library(tidyverse)
+
+example_df <- data.frame(
+  x1 = c(1, 2, 3),
+  x2 = c("a", "b", "c"),
+  x3 = c(5, 1, 2),
+  y1 = c(0, 9, 2),
+  y2 = c(2, 7, 9),
+  z = c(0, 0, 0)
+)
+
+example_df
+```
+
+
+1.
+
+```{r}
+example_df |>
+  select(starts_with("x"))
+```
+
+2.
+
+```{r}
+example_df |>
+  select(where(is.numeric))
+```
+
+3.
+
+```{r}
+example_df |>
+  select(where(is.numeric) & starts_with("x"))
+```
+
+4.
+
+```{r}
+example_df |>
+  summarize(across(where(is.numeric) & starts_with("x"), 
+                   list("median" = median, "iqr" = IQR)))
+```
+
+
+
+

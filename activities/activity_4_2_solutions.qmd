@@ -1,0 +1,164 @@
+---
+title: "Activity 2 solutions"
+format: 
+  html:
+    embed-resources: true
+editor: source
+author: "Ciaran Evans"
+---
+
+1.
+
+```{r}
+my_mean <- function(x){
+  return(sum(x)/length(x))
+}
+```
+
+2.
+
+```{r}
+my_mean(c(1, 2, 3))
+mean(c(1, 2, 3))
+
+my_mean(1:100)
+mean(1:100)
+```
+
+3.
+
+```{r}
+my_mean <- function(x, w){
+  return(sum(x*w)/sum(w))
+}
+```
+
+4.
+
+```{r}
+my_mean <- function(x, w = rep(1, length(x))){
+  return(sum(x*w)/sum(w))
+}
+```
+
+
+5.
+
+```{r, eval=F}
+# should be 2
+my_mean(x = c(1, 2, 3))
+
+# should be 2
+my_mean(x = c(1, 2, 3), w = c(1, 1, 1))
+
+# should be 1.5
+my_mean(x = c(1, 2, 3), w = c(1, 1, 0))
+```
+
+6.
+
+```{r}
+relu <- function(x){
+  return(ifelse(x > 0, x, 0))
+}
+
+relu(c(-1, 1))
+```
+
+7.
+
+```{r}
+leaky_relu <- function(x, a=0){
+  return(ifelse(x > 0, x, a*x))
+}
+```
+
+8.
+
+```{r}
+huber <- function(x){
+  return(ifelse(abs(x) <= 1, x^2, 2*abs(x) - 1))
+}
+```
+
+9.
+
+```{r}
+huber(c(0.5, 1, 2))
+```
+
+10.
+
+```{r}
+huber <- function(x, a=1){
+  return(ifelse(abs(x) <= a, x^2, 2*a*abs(x) - a^2))
+}
+```
+
+11.
+
+```{r}
+my_lm <- function(X_mat, y){
+  return(solve(t(X_mat) %*% X_mat) %*% t(X_mat) %*% y)
+}
+
+n <- 100
+x <- rnorm(n)
+noise <- rnorm(n)
+y <- 1 + x + noise
+
+lm(y ~ x)
+
+X_mat <- cbind(1, x)
+my_lm(X_mat, y)
+```
+
+12.
+
+```{r}
+my_sd <- function(x){
+  n <- length(x)
+  return(sqrt(sum((x - mean(x))^2)/(n-1)))
+}
+
+my_sd(1:100)
+sd(1:100)
+```
+
+13.
+
+```{r}
+p_norm <- function(x, p=2){
+  return(sum(abs(x)^p)^(1/p))
+}
+```
+
+14.
+
+```{r}
+my_kurtosis <- function(x){
+  numerator <- mean((x - mean(x))^4)
+  denominator <- (mean((x - mean(x))^2))^2
+  return(numerator/denominator - 3)
+}
+```
+
+15.
+
+```{r}
+my_cor <- function(x, y){
+  numerator <- sum((x - mean(x)) * (y - mean(y)))
+  denominator <- sqrt(sum((x - mean(x))^2)) * sqrt(sum((y - mean(y))^2))
+  return(numerator/denominator)
+}
+
+x <- rnorm(100)
+y <- rnorm(100)
+cor(x, y)
+my_cor(x, y)
+```
+
+
+
+
+

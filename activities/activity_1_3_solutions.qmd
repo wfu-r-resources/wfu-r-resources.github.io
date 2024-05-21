@@ -1,0 +1,114 @@
+---
+title: "Activity 3 solutions"
+format: 
+  html:
+    embed-resources: true
+editor: source
+author: "Ciaran Evans"
+---
+
+```{r include=F}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(message = F)
+knitr::opts_chunk$set(warning = F)
+library(tidyverse)
+library(gapminder)
+library(mdsr)
+```
+
+
+1.
+
+```{r}
+new_gapminder <- gapminder |>
+  filter(year == 2007, 
+         lifeExp >= 70, 
+         gdpPercap <= 20000)
+```
+
+2.
+
+```{r}
+gapminder |>
+  filter(year == 2007) |>
+  count(continent)
+```
+
+3.
+
+```{r}
+gapminder |>
+  mutate(log_gdp_percap = log(gdpPercap)) |>
+  filter(year == 2007, lifeExp >= 70) |>
+  summarize(median_log_gdp = median(log_gdp_percap))
+```
+
+4.
+
+```{r}
+gapminder |>
+  mutate(log_gdp_percap = log(gdpPercap)) |>
+  filter(year == 2007, lifeExp >= 70) |>
+  group_by(continent) |>
+  summarize(median_log_gdp = median(log_gdp_percap))
+```
+
+5. No
+
+6. 
+
+```{r}
+gapminder |>
+  mutate(log_gdp_percap = log(gdpPercap)) |>
+  filter(year == 2007) |>
+  group_by(continent) |>
+  summarize(median_life = median(lifeExp),
+            cor_gdp_life = cor(lifeExp, log_gdp_percap))
+```
+
+(Note: there are only 2 countries in Oceania, so the correlation is meaningless here)
+
+7.
+
+```{r}
+gapminder |>
+  mutate(log_gdp_percap = log(gdpPercap)) |>
+  filter(year == 2007) |>
+  ggplot(aes(x = log_gdp_percap, 
+             y = lifeExp,
+             color = continent)) +
+  geom_point() +
+  labs(x = "log GDP per capita",
+       y = "Life expectancy at birth (years)",
+       title = "Life expectancy vs. log GDP per capita",
+       color = "Continent") +
+  theme_bw()
+```
+
+There appears to be a fairly strong, positive, linear relationship between log GDP per capita and life expectancy at birth. From the scatterplot and summary statistics, we can see that African countries tend to have lower GDP per capita and life expectancy than countries in other continents, while European countries tend to have the highest life expectancy and GDP per capita.
+
+
+8.
+
+```{r}
+violations_summary <- Violations |>
+  drop_na(zipcode, score, boro) |>
+  filter(boro == "MANHATTAN") |>
+  group_by(zipcode) |>
+  summarize(med_score = median(score),
+            N = n()) |>
+  filter(N >= 50)
+```
+
+9.
+
+```{r}
+violations_summary |>
+  ggplot(aes(x = N, y = med_score)) +
+  geom_point() +
+  theme_bw() +
+  labs(x = "Number of inspections",
+       y = "Median inspection score")
+```
+
+

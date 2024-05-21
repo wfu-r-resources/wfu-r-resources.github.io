@@ -1,0 +1,78 @@
+---
+title: "Activity 3 solutions"
+format: 
+  html:
+    embed-resources: true
+editor: source
+author: "Ciaran Evans"
+---
+
+```{r include=F}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(message = F)
+knitr::opts_chunk$set(warning = F)
+library(tidyverse)
+library(googlesheets4)
+gs4_deauth()
+gdp_data <- read_sheet("https://docs.google.com/spreadsheets/d/1RctTQmKB0hzbm1E8rGcufYdMshRdhmYdeL29nXqmvsc/pub?gid=0")
+lit_data = read_sheet("https://docs.google.com/spreadsheets/d/1hDinTIRHQIaZg1RUn6Z_6mo12PtKwEPFIz_mJVF6P5I/pub?gid=0")
+```
+
+```{r}
+gdp_data <- gdp_data |>
+  rename(country = starts_with("Income")) |>
+  pivot_longer(-country, names_to = "year", values_to = "gdp",
+               values_drop_na = TRUE)
+
+lit_data <- lit_data |>
+  rename(country = starts_with("Adult")) |>
+  pivot_longer(-country, names_to = "year", values_to = "literacy",
+               values_drop_na = TRUE)
+```
+
+
+1.
+
+```{r}
+lit_data |>
+  inner_join(gdp_data, join_by(country, year)) |>
+  head()
+```
+
+2.
+
+```{r}
+air_quality <- read.csv("https://raw.githubusercontent.com/pandas-dev/pandas/main/doc/data/air_quality_long.csv")
+air_parameters <- read.csv("https://raw.githubusercontent.com/pandas-dev/pandas/main/doc/data/air_quality_parameters.csv")
+```
+
+```{r}
+air_quality <- air_quality |>
+  left_join(air_parameters, join_by(parameter == id))
+
+head(air_quality)
+```
+
+3.
+
+```{r}
+library(nycflights13)
+
+flights |>
+  left_join(planes, join_by(tailnum)) |>
+  head()
+```
+
+4.
+
+```{r}
+flights |>
+  left_join(planes, join_by(tailnum)) |>
+  rename(manufacture_date = year.y) |>
+  select(tailnum, manufacture_date) |>
+  distinct() |>
+  slice_min(manufacture_date, n=3)
+```
+
+The oldest plane has tail number N381AA.
+

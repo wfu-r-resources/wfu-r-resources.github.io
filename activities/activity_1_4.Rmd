@@ -9,13 +9,15 @@ link-citations: yes
 
 ## Practice writing code
 
-In each of the questions below, write code (in R or Python) to produce the output from the original data.
+In each of the questions below, write code to produce the output from the original data.
 
 1. Original data:
 
 ```{r, echo=F, message=F, warning=F}
 library(tidyverse)
 library(palmerpenguins)
+
+set.seed(4)
 
 sub_data <- penguins |>
   slice_sample(n=10) |>
@@ -71,5 +73,5 @@ Output:
 ```{r, echo=F}
 sub_data |>
   filter(species == "Adelie", 
-         island == "Dream")
+         island == "Torgersen")
 ```

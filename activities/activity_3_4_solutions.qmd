@@ -1,0 +1,35 @@
+---
+title: "Activity 4 solutions"
+format: 
+  html:
+    embed-resources: true
+editor: source
+author: "Ciaran Evans"
+---
+
+```{r include=F}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(message = F)
+knitr::opts_chunk$set(warning = F)
+knitr::opts_chunk$set(error = T)
+```
+
+1.
+
+$$\text{weight}_i = \beta_0 + \beta_1 \text{WingLength}_i + \beta_2 \text{TreatLarge}_i + \beta_3 \text{TreatReduced}_i + \varepsilon_i$$
+
+2.
+
+```{r}
+library(tidyverse)
+library(Stat2Data)
+data("Sparrows")
+
+sparrow_lm <- lm(Weight ~ WingLength + Treatment, data = Sparrows)
+summary(sparrow_lm)
+```
+
+3. 0.445g (since there is no interaction, all that matters is keeping treatment fixed; the slope is the same for each of the treatment groups)
+
+4. -0.458g
+

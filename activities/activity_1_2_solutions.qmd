@@ -1,0 +1,187 @@
+---
+title: "Activity 2 solutions"
+format: 
+  html:
+    embed-resources: true
+editor: source
+author: "Ciaran Evans"
+---
+
+```{r include=F}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(message = F)
+knitr::opts_chunk$set(warning = F)
+library(tidyverse)
+library(nycflights13)
+```
+
+
+1.
+
+```{r, eval=F}
+# getting dimensions of the data
+glimpse(flights)
+
+# You can view documentation with ?flights in the console
+
+# getting the dimension after removing NAs
+flights |>
+  drop_na() |>
+  glimpse()
+
+# 336776 - 327346
+```
+
+The `flights` dataset contains information on 336776 different flights from three New York airports (JFK, LGA, and EWR) in 2013. Each row represents a flight, and there are 19 columns capturing information about departure and landing times, delays, the origin and destination, and the airline. The data was collected by the Bureau of Transportation Statistics, part of the Research and Innovative Technology Administration (RITA), and is provided in the `nycflights13` data. 9430 rows in the data contain missing information.
+
+
+2.
+
+```{r}
+flights |>
+  ggplot(aes(x = dep_delay)) +
+  geom_histogram() +
+  labs(x = "Departure delay (minutes)",
+       title = "Histogram for departure delay") +
+  theme_bw()
+```
+
+The distribution of departure delay is unimodal and highly right skewed, with a peak around 0 minutes. Almost all flights in the data have a departure delay below 200 minutes. These may be outliers.
+
+3.
+
+```{r}
+flights |>
+  ggplot(aes(x = origin)) +
+  geom_bar() +
+  labs(x = "Origin airport",
+       title = "Distribution of flights by NYC airport") +
+  theme_bw()
+```
+
+EWR had the most departing flights.
+
+4.
+
+Options include faceted histograms and grouped box plots (see below).
+
+```{r}
+# Option 1: faceted histograms
+flights |>
+  ggplot(aes(x = dep_delay)) +
+  geom_histogram() +
+  facet_wrap(~origin) +
+  labs(x = "Departure delay (minutes)",
+       title = "Departure delay by origin airport") +
+  theme_bw()
+
+# Option 2: boxplots
+flights |>
+  ggplot(aes(x = origin, y = dep_delay)) +
+  geom_boxplot() +
+  labs(x = "Origin airport",
+       y = "Departure delay (minutes)",
+       title = "Departure delay by origin airport")
+
+# calculating mean and sd
+flights |>
+  drop_na() |>
+  group_by(origin) |>
+  summarize(mean_delay = mean(dep_delay),
+            sd_delay = sd(dep_delay))
+```
+
+The distributions of departure delay look similar across airports, with all three distributions unimodal and strongly right skewed. If there are differences in the distributions, the skewness is making it very difficult to see. The three distributions have similar means and standard deviations.
+
+5.
+
+```{r}
+flights |>
+  drop_na(dep_delay, arr_delay, origin) |>
+  ggplot(aes(x = dep_delay, 
+             y = arr_delay, 
+             color = origin, 
+             shape=origin)) +
+  geom_point(alpha = 0.7) +
+  labs(x = "Departure delay (minutes)", 
+       y = "Arrival delay (minutes)",
+       color = "Origin airport",
+       shape = "Origin airport",
+       title = "Arrival delay vs. departure delay in NYC airports") +
+  theme_bw() +
+  scale_color_manual(values = c("#999999", "#E69F00", "#56B4E9"))
+```
+
+6.
+
+```{r}
+flights |>
+  summarize(delay_cor = cor(arr_delay, dep_delay, use = "complete.obs"))
+```
+
+7.
+
+```{r}
+flights |>
+  group_by(origin) |>
+  summarize(delay_cor = cor(arr_delay, dep_delay, use = "complete.obs"))
+```
+
+8.
+
+```{r}
+flights |>
+  mutate(time_gained = arr_delay - dep_delay) |>
+  ggplot(aes(x = time_gained)) +
+  geom_histogram() +
+  labs(x = "Time gained") +
+  theme_bw()
+```
+
+
+9.
+
+```{r}
+flights |>
+  mutate(time_gained = arr_delay - dep_delay) |>
+  group_by(carrier) |>
+  summarize(avg_time_gained = mean(time_gained, na.rm=T),
+            sd_time_gained = sd(time_gained, na.rm=T))
+```
+
+10.
+
+```{r}
+flights |>
+  count(origin, sort = TRUE)
+
+flights |>
+  group_by(origin) |>
+  summarize(n = n()) |>
+  arrange(desc(n))
+```
+
+11.
+
+```{r}
+flights |>
+  filter(carrier == "AA") |>
+  count(origin)
+```
+
+12.
+
+```{r}
+flights |>
+  filter(carrier == "AA", dep_delay < 0) |>
+  count()
+```
+
+
+
+
+
+
+
+
+

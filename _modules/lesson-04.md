@@ -3,8 +3,15 @@ title: Intro to linear regression
 ---
 
 Module 4
-: Intro to linear regression
-  : [Activity 1](https://wfu-r-resources.github.io/activities/activity_3_1.html)
-  : [Activity 2](https://wfu-r-resources.github.io/activities/activity_3_2.html)
-  : [Activity 3](https://wfu-r-resources.github.io/activities/activity_3_3.html)
-  : [Activity 4](https://wfu-r-resources.github.io/activities/activity_3_4.html)
+: Activities
+  : [A1](https://wfu-r-resources.github.io/activities/activity_3_1.html)
+  : [A2](https://wfu-r-resources.github.io/activities/activity_3_2.html)
+  : [A3](https://wfu-r-resources.github.io/activities/activity_3_3.html)
+  : [A4](https://wfu-r-resources.github.io/activities/activity_3_4.html)
+  
+: Solutions
+  : [A1](https://wfu-r-resources.github.io/activities/activity_3_1_solutions.html)
+  : [A2](https://wfu-r-resources.github.io/activities/activity_3_2_solutions.html)
+  : [A3](https://wfu-r-resources.github.io/activities/activity_3_3_solutions.html)
+  : [A4](https://wfu-r-resources.github.io/activities/activity_3_4_solutions.html)
+

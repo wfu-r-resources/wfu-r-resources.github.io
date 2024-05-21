@@ -1,0 +1,51 @@
+---
+title: "Activity 2 solutions"
+format: 
+  html:
+    embed-resources: true
+editor: source
+author: "Ciaran Evans"
+---
+
+```{r include=F}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(message = F)
+knitr::opts_chunk$set(warning = F)
+library(tidyverse)
+library(googlesheets4)
+gs4_deauth()
+gdp_data <- read_sheet("https://docs.google.com/spreadsheets/d/1RctTQmKB0hzbm1E8rGcufYdMshRdhmYdeL29nXqmvsc/pub?gid=0")
+```
+
+
+1.
+
+```{r}
+gdp_data |>
+  rename(country = starts_with("Income")) |>
+  pivot_longer(cols = -country,
+               names_to = "year",
+               values_to = "gdp",
+               values_drop_na = T)
+```
+
+2.
+
+```{r}
+who2 |>
+  pivot_longer(cols = -c(country, year),
+               names_to = c("diagnosis", "sex", "age_group"),
+               names_sep = "_",
+               values_to = "count",
+               values_drop_na = T)
+```
+
+3.
+
+```{r}
+household |>
+  pivot_longer(cols = -family,
+               names_to = c(".value", "child"),
+               names_sep = "_",
+               values_drop_na = T)
+```

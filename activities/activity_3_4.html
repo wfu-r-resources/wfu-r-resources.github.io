@@ -1702,7 +1702,7 @@ response, and wing length and treatment as the predictors.</p>
 include multiple predictors by “adding” them together in the regression
 formula (we don’t really add them mathematically; the <code>+</code>
 just means “put another predictor in the model”).</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>sparrow_lm <span class="ot">&lt;-</span> <span class="fu">lm</span>(Weight <span class="sc">~</span> Treatment <span class="sc">+</span> WingLength, <span class="at">data =</span> Sparrows)</span>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>sparrow_lm <span class="ot">&lt;-</span> <span class="fu">lm</span>(Weight <span class="sc">~</span> WingLength <span class="sc">+</span> Treatment, <span class="at">data =</span> Sparrows)</span>
 <span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">summary</span>(sparrow_lm)</span></code></pre></div>
 </div>
 <div id="question-3" class="section level4 question">
