@@ -1,0 +1,60 @@
+---
+title: "Loading Data and Installing Packages"
+author: "with love from M.S. '24 and '25"
+format: html
+---
+
+```{r include=F}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(message = F)
+knitr::opts_chunk$set(warning = F)
+```
+
+```{r, message = FALSE, warning = FALSE}
+library(tidyverse)
+```
+
+# Working with Data
+## How To:
+### Loading Packages
+
+Packages contain collections of functions, data sets, and other code. They are stored in the library and developed by the community. Some default packages are already present in the library, while others must first be installed before they can be used.
+ 
+To install packages, we use the command \textbf{install.packages} (pkgs). To load packages into the library and use them, we use the command \textbf{library} (package).
+ 
+For example, to install the dplyr package, and load it into the library, we use the following code:
+
+```r
+install.packages("dplyr")
+library(dplyr)
+```
+
+### Importing Data
+At some point, however, we will have our own data sets that we would like to import into R and use. To do so, we must load the file into R using functions such as \textbf{load()}, \textbf{read_csv()} (from the readr package) or \textbf{read_excel()} (from the readxl package). These functions require either that the working directory be set to the location of the data or that the location of the data is specified within the function in the file path string (the piece in quotes). This can be checked using the \textbf{setwd()} and \textbf{getwd()} functions.
+ 
+For example, to import a data set named file, we use the following code. Remember, we need to install the \textbf{readr}and \textbf{readxl} packages first if we haven't done so already!
+
+```r
+load(“file.rdata”) # if file is an R Data file
+read_csv(“file.csv”) # if file is a CSV file
+read_excel(“file.xlsx”) # if file is an Excel file
+```
+ 
+If a file is stored within a folder on the desktop, for example, we can either specify this within the command function or set our working directory to the same location. For example,
+
+```r
+load(“Desktop/folder/file.rdata”)
+```
+
+OR
+
+```r
+setwd (“Desktop/folder”)
+load (“file.rdata”)
+```
+
+
+
+
+
+

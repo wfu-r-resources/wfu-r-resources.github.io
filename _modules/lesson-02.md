@@ -12,5 +12,8 @@ Module 2
 : Overview of EDA
   : [EDA cheatsheet](https://wfu-r-resources.github.io/resources/eda_overview.html)
   
+: Notes from fellow grad students
+  : [Data wrangling](https://wfu-r-resources.github.io/resources/DataWranglingGrads.html), [Data visualization](https://wfu-r-resources.github.io/resources/DataVizGrads.html)
+  
 : [MDSR](https://mdsr-book.github.io/mdsr3e/) Chapters 2--4
 : [RforDS](https://r4ds.hadley.nz/) Chapters 1, 3, 9, 10

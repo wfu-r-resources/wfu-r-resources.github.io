@@ -1,0 +1,190 @@
+---
+title: "Data Wrangling"
+author: "with love from M.S. '24 and '25"
+format: html
+---
+
+```{r include=F}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(message = F)
+knitr::opts_chunk$set(warning = F)
+```
+
+```{r}
+library(tidyverse)
+```
+
+# Data Wrangling
+
+## How To:
+
+### Tidyverse
+The most useful skill here is your ability to Google and read documentation. This [cheatsheet](https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf) is useful for data wrangling in R using tidyverse. Remember, you can "pipe" your input using either `|>` or `%>%`. 
+
+In case you still haven't loaded in your packages, run this bit. 
+```r
+install.packages("tidyverse") # install the package if you haven't
+library(tidyverse) # load the library
+```
+
+#### Select
+
+You can choose any columns you want! Read the documentation here [select](https://dplyr.tidyverse.org/reference/select.html). Here are some syntax examples.
+
+```{r}
+col_a <- sample(c("joe", "steve", "sarah", "anne"), size = 20, replace = TRUE)
+col_b <- sample(1:10, size = 20, replace = TRUE)
+col_c <- sample(c(2.3, 0, 3.1, 2.8), replace = TRUE, size = 20)
+col_d <- sample(c(TRUE, FALSE), replace = TRUE, size = 20)
+wrangler <- data.frame(col_a, col_b, col_c, col_d)
+```
+
+```r
+# select one column by name
+wrangler |>
+  select(col_a)
+
+# select multiple column by name
+wrangler |>
+  select(c(col_a, col_c))
+
+# select all columns from a to c
+wrangler |>
+  select(col_a:col_c)
+
+# select by index
+wrangler %>%
+  select(1, 3, 4)
+
+# select by logic operator, see documentation for available logic function
+wrangler %>%
+  select(!ends_with("gene")) # select all columns that do not end with "gene"
+
+#exclude columns in specific index positions
+wrangler %>%
+  select(-c(1,2))
+```
+#### Filter
+
+You can select the rows you want here by several criteria. Read more here, and run the below as syntax examples! [filter](https://dplyr.tidyverse.org/reference/filter.html)
+
+```r
+# filter by conditions
+wrangler %>%
+  filter(col_b > mean(col_c, na.rm = TRUE)) # get rows where the value in col1 is greater than the mean of col2
+
+wrangler %>%
+  filter(col_a == "joe") # get rows where the name column has value "joe"
+
+# multiple conditions (note, this never happens in our data)
+filter(wrangler, col_a == "sarah", col_b == 11)
+```
+
+#### Mutate
+This command lets you create a new column or change a column in place. The information will be different for each row if you use a vector to create this new column. 
+
+```r
+# create a column of NAs
+wrangler %>%
+  mutate(col_e = rep(NA, times = 20))
+
+#create a column that sums two existing columns
+wrangler %>%
+  mutate(col_f = col_b + col_c)
+
+# create a columns where all values are "none"
+wrangler %>%
+  mutate(new_col_name = "none")
+```
+
+#### Group by and Summarize
+
+See [group data](https://dplyr.tidyverse.org/articles/grouping.html?q=mutate#group_by).
+
+### Base R
+
+#### Select
+You can select specific columns from a data frame using square brackets [ ]. With a dataset named data with columns col1, col2, and col3. To select specific columns, you can use the following syntax:
+
+```{r}
+new_data <- wrangler[, c("col_a", "col_b")] 
+```
+
+This saves a new data set with only those specific columns.
+
+You can exclude specific columns from a data frame using subset(). You can use the following syntax:
+
+```{r}
+new_data <- subset(wrangler, select = -col_a)
+```
+
+The new_data dataset will contain all the columns except the excluded column.
+
+#### Filter
+You can filter rows from a dataset based on a condition using either the \textbf{subset()} function or logical indexing. Let's filter our dataset so the second column is greater than 2. This filtered data will only have the rows where this filter returns true.
+
+```{r}
+filtered_data <- subset(wrangler, col_b > 2) #option 1
+filtered_data <- wrangler[wrangler$col_b > 2, ] #option 2
+```
+
+#### Mutate
+
+In Base R, there is no dedicated mutate() function. However, you can create or modify existing variables by using standard R functions.
+
+To create a new column in a data frame, you can simply assign values to it.
+```{r}
+wrangler$new_column <- wrangler$col_b + wrangler$col_c
+```
+
+In the above code, new_column is created in the dataframe and populated with the sum of the individual rows of the second and third columns.
+
+To modify an existing column in a data frame, you can directly assign new values to it.
+```{r}
+wrangler$col_b <- wrangler$col_b * 5
+```
+
+In the above code, the value of column1 is multiplied by 5 and the new values are reassigned to the existing column; the column values are updated.
+
+#### Group By and Summarize
+
+Grouping data in Base R is done by using the \textbf{aggregate()} function. You can group your data by one or more columns.
+
+```{r}
+grouped_data <- aggregate(. ~ col_a, wrangler[,-c(4)], FUN = mean)
+```
+
+The data is is grouped by the second column, and the mean for each group is calculated and this information is store in grouped_data.
+
+Summarizing in Base R is done using the function \textbf{tapply()}. It summarizes the data based on a grouping column (col_b) then calculates a statistic, e.g. mean or median for a numeric column (col_c) for each group.
+```{r}
+summary_data <- tapply(wrangler$col_c, wrangler$col_b, FUN = function(x) c(mean = mean(x), median = median(x)))
+```
+
+The result (summary_data) will contain a list where each element corresponds to a group defined by column1 and will contain the mean and median for that group.
+
+
+#### Join and Merge dataset
+
+To merge datasets horizontally (by a common column), we use the function merge(). Here's how:
+
+```r
+merged_data <- merge(data1, data2, by = "common_column")
+```
+
+Here, common_column is the column that both datasets have in common. The resulting merged_data will contain all columns from both datasets and rows are matched based on the values in the common_column.
+
+To merge datasets vertically (stacked), we use the rbind() function. However, both datasets should have the same structure and format for this to work. 
+
+```r
+combined_data <- rbind(data1, data2)
+```
+
+The resulting dataset will contain all the rows from both dataset.
+
+## You Try!
+1. Create a new data table containing only the Adelie penguins.
+
+2. Make a bar plot of the Adelie body mass, grouped by the island.
+
+3. Take the log of the Adelie penguin's body mass, and then merge it to the original data set.

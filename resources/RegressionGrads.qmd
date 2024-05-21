@@ -1,0 +1,79 @@
+---
+title: "Regression"
+author: "with love from M.S. '24 and '25"
+format: html
+---
+
+```{r include=F}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(message = F)
+knitr::opts_chunk$set(warning = F)
+```
+
+```{r}
+library(tidyverse)
+```
+
+# Linear Regression
+
+## How To:
+
+Before you begin with linear regression in R, ensure that you have imported your dataset into R using functions such as read.csv, read.table, or any other relevant method based on the format of your data. See the first section for examples!
+
+It's good practice to create data visualizations so you gain insights into its distribution and relationships before modeling. One effective way to visualize these relationships is by using scatter plots, which provide a visual representation of how the dependent and independent variables interact with each other. 
+
+The lm function is used to create a linear regression model in R. Here is the syntax.
+```{r}
+toy <- data.frame(x1 = c(1,2,3,4), #independent variable 1
+                  x2 = c(3,4,7,9), #independent variable 2
+                  y = c(0,5,2,8)) #dependent variable
+model <- lm(y ~ x1 + x2, data = toy)
+```
+
+
+A residual plot helps by checking for the assumption of both linearity and the constant variance of the errors. We want to make sure the vertical width of our plot is constant for the constant variance check to be fulfilled. For linearity, we want to ensure there is no pattern for the residuals. In a good residual plot, residuals should be scattered randomly around 0.
+
+```{r}
+plot(toy$x1, model$residuals,
+     xlab="Independent Variable", ylab="Residuals",
+     main="Residual Plot")
+abline(h=0, col="red")  # Add a horizontal line at zero for reference
+```
+
+A Q-Q plot helps assess the normality assumption by comparing the distribution of residuals to a theoretical normal distribution. If there is a sustained pattern that deviates from the straight line, this indicates a deviation from normality and points to the normality assumption being broken.
+
+```{r}
+qqnorm(model$residuals)
+qqline(model$residuals)
+```
+
+The summary output provides coefficients for each independent variable. In the output, you can find the coefficient by looking under the estimate column. 
+
+```{r}
+summary(model)
+```
+
+In context, we often interpret these coefficients. For example if had a linear regression model which predicted salary based on age, and your coefficient for age was 3,000, you would say that our model predicts that on average we expect an increase in one unit of age (years) results in a 3,000 dollar increase in salary.
+	
+Here is some bonus content for the overachievers in the room.
+
+If any of the assumptions are broken, it is necessary to perform transformations on the data. If Linearity is broken, perform a transformation on one or more of the explanatory variables. Examples include logs and square roots. You can do this either in the data or in the model itself.
+
+```{r}
+toy <- toy |> mutate(log_x1 = log(x1)) #appends extra column with transformation
+lm(data = toy, y ~ log_x1 + x2) #option 1
+lm(data = toy, y ~ log(x1) + x2) #option 2
+```
+
+## You Try!
+
+1. Compute a line of best fit for Figure 1 (from the last you try), add it to the plot, and write down its equation.
+
+2. For a penguin weighing 3800 grams, what does our model predict the length of its bill to be?
+
+3. A residual is the difference between what you know to be the truth and what the model expected. Compute the residual for our 3800 gram penguin. Remember, the formula is observed - expected.
+
+4. Check the assumptions for the line you made.
+
+5. Interpret the coefficient for $beta_1$ in context.
+
